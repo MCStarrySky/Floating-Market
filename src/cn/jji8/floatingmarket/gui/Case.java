@@ -154,7 +154,7 @@ public class Case{
     public boolean add(String 文件名字,ItemStack a){
         for(int i=0;i<this.物品.length;i++){
             if(this.物品[i]==null){
-                this.物品[i]=new GoodSpecial(文件名字,a);
+                this.物品[i]=new GoodSpecial(this,文件名字,a);
                 this.物品[i].jiazai();
                 return true;
             }

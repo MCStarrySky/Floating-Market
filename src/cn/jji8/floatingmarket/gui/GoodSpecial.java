@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,6 +22,8 @@ import java.util.Map;
  * 负责特殊物品处理
  * */
 public class GoodSpecial implements Goods {
+    Case 箱子 = null;
+
     /**
      * 保存方法,用于保存数据
      */
@@ -100,10 +103,11 @@ public class GoodSpecial implements Goods {
     }
 
     /**
-     * 构造方法一个
-     * ItemStack可以null
+     *构造器，需要一个Case，在刷新物品的时候会调用Case的shuaxin方法
+     * 需要可以继承Case重写shuaxin即可。
      * */
-    public GoodSpecial(String 文件名字,ItemStack a){
+    public GoodSpecial(@Nonnull Case Case,String 文件名字,ItemStack a){
+        箱子 = Case;
         this.文件名字 = 文件名字;
         jiazai();
         if(a==null){
@@ -224,7 +228,7 @@ public class GoodSpecial implements Goods {
             }
             return;
         }
-        shuaxin();
+        suanxinxianshi();
         baocun(10);
     }
     long 执行时间 = -1;
@@ -267,6 +271,9 @@ public class GoodSpecial implements Goods {
      * 获取用于显示的物品堆
      */
     public ItemStack getxianshiwupin() {
+        if(显示物品==null){
+            shuaxinxianshiwupin();
+        }
         return 显示物品;
     }
     ItemStack 显示物品 = null;
@@ -295,13 +302,7 @@ public class GoodSpecial implements Goods {
         if(错误){
             ItemMeta.setDisplayName("§7§l此物品配置错误");
         }
-        List<String> ArrayList = null;
-        if(ItemMeta!=null){
-            ArrayList = ItemMeta.getLore();
-        }
-        if(ArrayList==null){
-            ArrayList = new ArrayList();
-        }
+        List<String> ArrayList = new ArrayList();
         String 服务器账户余额字符舍 = Money.XianShiZiFu(Main.getMain().getServermoney().getmoney());
         for(String S:价格显示){
             S = S.replaceAll("%价格%",价格字符舍)
@@ -413,8 +414,9 @@ public class GoodSpecial implements Goods {
     /**
      * 调价刷新
      * */
-    public void shuaxin(){
+    public void suanxinxianshi(){
         shuaxinxianshiwupin();
+        箱子.shuaxin();
     }
     /**
      * 调用此方法代表玩家购买一组物品
@@ -473,7 +475,7 @@ public class GoodSpecial implements Goods {
             Money.jiaqian(P,钱,true,false);
             P.sendMessage(背包满消息);
         }
-        shuaxin();
+        suanxinxianshi();
         baocun(10);
     }
 }
