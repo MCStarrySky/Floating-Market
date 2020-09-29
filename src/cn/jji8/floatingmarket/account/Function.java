@@ -1,4 +1,4 @@
-package cn.jji8.Floatingmarket.money;
+package cn.jji8.floatingmarket.account;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
@@ -12,13 +12,13 @@ import java.io.IOException;
 /**
  * 一个函数类，用于加载调用js函数
  * */
-public class moneyFunction {
+public class Function {
     Invocable Invocable;
     File file;
     /**
      * 通过一个js文件创建一个js
      * */
-    public moneyFunction(File file){
+    public Function(File file){
         this.file = file;
         FileReader FileReader = null;
         try {
@@ -45,7 +45,7 @@ public class moneyFunction {
     /**
      * 调用js中的函数
      * */
-    public Object function(String name, moneyVariable value){
+    public Object function(String name, Variable value){
         Object sss = null;
         try {
             sss = Invocable.invokeFunction(name,value);
@@ -61,7 +61,7 @@ public class moneyFunction {
     /**
      * 调用js中的指定方法，返回一个double
      * */
-    public double Doublefunction(String name, moneyVariable value){
+    public double Doublefunction(String name, Variable value){
         Object sss = function(name,value);
         if(sss==null){
             return -1;

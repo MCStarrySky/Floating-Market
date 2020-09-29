@@ -1,7 +1,6 @@
-package cn.jji8.Floatingmarket.obsolete;
+package cn.jji8.floatingmarket.obsolete;
 
-import cn.jji8.Floatingmarket.main;
-import cn.jji8.Floatingmarket.obsolete.formula;
+import cn.jji8.floatingmarket.Main;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -17,8 +16,8 @@ public class FormulaList {
      * 加载公式list
      * */
     public void setFormulalist() {
-        main.getMain().saveResource("formula.yml",false);
-        File F = new File(main.getMain().getDataFolder(),"formula.yml");
+        Main.getMain().saveResource("formula.yml",false);
+        File F = new File(Main.getMain().getDataFolder(),"formula.yml");
         setFormulalist(F);
     }
     public void setFormulalist(File F) {
@@ -40,7 +39,7 @@ public class FormulaList {
             System.out.println("没有找到符合条件的公式，请检查公式条件，已使用价格999");
             return 999;
         }
-        return new formula((String) map.get("公式")).calculation(变量列表);
+        return new Formula((String) map.get("公式")).calculation(变量列表);
     }
     /**
      * 返回符合条件得map

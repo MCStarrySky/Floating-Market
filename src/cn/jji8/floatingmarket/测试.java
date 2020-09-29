@@ -1,6 +1,4 @@
-package cn.jji8.Floatingmarket;
-
-import org.bukkit.Material;
+package cn.jji8.floatingmarket;
 
 public class 测试 {
     public static void main(String[] ares){

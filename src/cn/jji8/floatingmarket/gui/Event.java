@@ -1,6 +1,6 @@
-package cn.jji8.Floatingmarket.gui;
+package cn.jji8.floatingmarket.gui;
 
-import cn.jji8.Floatingmarket.main;
+import cn.jji8.floatingmarket.Main;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -17,8 +17,8 @@ import java.util.List;
 /**
  * 事件,主要负责事件的处理
  * */
-public class event{
-    public FileConfiguration Configcommodity = YamlConfiguration.loadConfiguration(new File(main.getMain().getDataFolder(),"commodity.yml"));;
+public class Event {
+    public FileConfiguration Configcommodity = YamlConfiguration.loadConfiguration(new File(Main.getMain().getDataFolder(),"commodity.yml"));;
     ArrayList<Case> biao;
     List<String> 商品列表;
     public boolean delete(String 商品){
@@ -54,10 +54,10 @@ public class event{
      public void baocun(){
          Configcommodity.set("商品",商品列表);
          try {
-             Configcommodity.save(new File(main.getMain().getDataFolder(),"commodity.yml"));
+             Configcommodity.save(new File(Main.getMain().getDataFolder(),"commodity.yml"));
          } catch (IOException e) {
              e.printStackTrace();
-             main.getMain().getLogger().warning("保存commodity.yml失败");
+             Main.getMain().getLogger().warning("保存commodity.yml失败");
          }
      }
      /**
@@ -65,9 +65,9 @@ public class event{
       * @param 商品
       * @return
       * */
-     public goods shousuo(Material 商品){
+     public Goods shousuo(Material 商品){
          for(Case a:biao){
-             goods goods = a.sousuo(商品);
+             Goods goods = a.sousuo(商品);
              if(goods!=null){
                  return goods;
              }
@@ -77,11 +77,11 @@ public class event{
     /**
      * 搜索一个商品,没有返回null
      * */
-    public goods shousuo(ItemStack 商品){
+    public Goods shousuo(ItemStack 商品){
         商品 = new ItemStack(商品);
         商品.setAmount(1);
         for(Case a:biao){
-            goods goods = a.sousuo(商品);
+            Goods goods = a.sousuo(商品);
             if(goods!=null){
                 return goods;
             }
@@ -126,7 +126,7 @@ public class event{
     /**
      * 用于给玩家打开指定gui
      * */
-    String 没有页数消息 = main.getMain().getConfig().getString("没有页数消息");
+    String 没有页数消息 = Main.getMain().getConfig().getString("没有页数消息");
     public void dakai(Player 玩家,int 页数){
         if(biao.size()<页数|页数<1){
             玩家.sendMessage(没有页数消息.replaceAll("%页数%", Integer.toString(页数)));

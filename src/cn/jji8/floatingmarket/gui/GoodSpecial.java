@@ -1,8 +1,8 @@
-package cn.jji8.Floatingmarket.gui;
+package cn.jji8.floatingmarket.gui;
 
-import cn.jji8.Floatingmarket.account.variable;
-import cn.jji8.Floatingmarket.main;
-import cn.jji8.Floatingmarket.money.money;
+import cn.jji8.floatingmarket.account.Variable;
+import cn.jji8.floatingmarket.Main;
+import cn.jji8.floatingmarket.money.Money;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * 负责特殊物品处理
  * */
-public class GoodSpecial implements  goods{
+public class GoodSpecial implements Goods {
     /**
      * 保存方法,用于保存数据
      */
@@ -34,11 +34,12 @@ public class GoodSpecial implements  goods{
                 wenjian.set("单独最高价格",单独最高价格);
                 wenjian.set("单独最低价格",单独最低价格);
                 wenjian.set("物品",物品);
+                wenjian.set("库存公式",库存公式);
                 try {
                     wenjian.save(文件);
                 } catch (IOException e) {
                     e.printStackTrace();
-                    main.getMain().getLogger().warning("数据文件保存失败");
+                    Main.getMain().getLogger().warning("数据文件保存失败");
                 }
             }
         };
@@ -62,7 +63,7 @@ public class GoodSpecial implements  goods{
     YamlConfiguration wenjian;
     @Override
     public void jiazai() {
-        wenjian = YamlConfiguration.loadConfiguration(文件 = new File(main.getMain().getDataFolder(),"special/"+getname()));
+        wenjian = YamlConfiguration.loadConfiguration(文件 = new File(Main.getMain().getDataFolder(),"special/"+getname()));
         if(wenjian.contains("购买数量")){
             购买数量 = wenjian.getLong("购买数量");
         }else {
@@ -76,6 +77,9 @@ public class GoodSpecial implements  goods{
         }
         if(wenjian.contains("物品")){
             物品 = wenjian.getItemStack("物品");
+        }
+        if(wenjian.contains("库存公式")){
+            库存公式 = wenjian.getString("库存公式");
         }
         baocun();
     }
@@ -109,26 +113,45 @@ public class GoodSpecial implements  goods{
         baocun();
     }
     long 购买数量 = 0;
-    double 涨跌幅度 = main.getMain().getConfig().getDouble("涨跌价格");
-    double 涨跌指数 = main.getMain().getConfig().getDouble("涨跌指数");
+    double 涨跌幅度 = Main.getMain().getConfig().getDouble("涨跌价格");
+    double 涨跌指数 = Main.getMain().getConfig().getDouble("涨跌指数");
     public double 单独最高价格 = -1;
     public double 单独最低价格 = -1;
     public ItemStack 物品;
-    double 手续费 = main.getMain().getConfig().getDouble("手续费");
+    double 手续费 = Main.getMain().getConfig().getDouble("手续费");
 
-    String 公式 = "Price";
+    String 价格公式 = "Price";
+    String 库存公式 = "stock";
     /**
      * 设置物品的公式名字
      * */
-    public void setSetformula(String 公式名字){
-        公式 = 公式名字;
+    public void setSetformula(String 价格公式,String 库存公式){
+        if(价格公式!=null){
+            this.价格公式 = 价格公式;
+        }
+        if(库存公式!=null){
+            this.库存公式 = 库存公式;
+        }
+    }
+    /**
+     * 获取当前库存字符
+     * */
+    public String getstock(){
+        Object jiage = Main.getMain().getFunction().function(库存公式,
+                new Variable()
+                        .setNumberOfItems(购买数量)
+        );
+        if(jiage==null){
+            return "公式错误";
+        }
+        return jiage.toString();
     }
     /**
      * 获取当前价格
      * */
     public double getPrice(){
-        double jiage = main.getMain().getFunction().Doublefunction(公式,
-                new variable()
+        double jiage = Main.getMain().getFunction().Doublefunction(价格公式,
+                new Variable()
                         .setNumberOfItems(购买数量)
         );
         if(单独最高价格>0){
@@ -158,10 +181,10 @@ public class GoodSpecial implements  goods{
         chushou(P,物品.getMaxStackSize());
     }
 
-    String 没物品消息 = main.getMain().getConfig().getString("没物品消息");
-    String 操作失败消息 = main.getMain().getConfig().getString("操作失败消息");
-    String 手续费不足 = main.getMain().getConfig().getString("手续费不足");
-    String 扣除手续费 = main.getMain().getConfig().getString("扣除手续费");
+    String 没物品消息 = Main.getMain().getConfig().getString("没物品消息");
+    String 操作失败消息 = Main.getMain().getConfig().getString("操作失败消息");
+    String 手续费不足 = Main.getMain().getConfig().getString("手续费不足");
+    String 扣除手续费 = Main.getMain().getConfig().getString("扣除手续费");
     /**
      * 调用此方法代表玩家出售此物品
      */
@@ -171,7 +194,7 @@ public class GoodSpecial implements  goods{
             return;
         }
         if(手续费>0){
-            if(!money.kouqian(P,手续费,false)){
+            if(!Money.kouqian(P,手续费,false)){
                 P.sendMessage(手续费不足.replaceAll("%钱%",Double.toString(手续费)));
                 return;
             }else {
@@ -194,7 +217,7 @@ public class GoodSpecial implements  goods{
         if(钱==0){
             return;
         }
-        if(!money.jiaqian(P,钱)){
+        if(!Money.jiaqian(P,钱)){
             for(int i = 0;i<数量a;i++){
                 购买数量++;
                 P.getInventory().addItem(物品);
@@ -238,8 +261,8 @@ public class GoodSpecial implements  goods{
     /**
      * 立即保存
      * */
-    String 错误物品 = main.getMain().getConfig().getString("错误物品");
-    List<String> 价格显示 = main.getMain().getConfig().getStringList("价格显示");
+    String 错误物品 = Main.getMain().getConfig().getString("错误物品");
+    List<String> 价格显示 = Main.getMain().getConfig().getStringList("价格显示");
     /**
      * 获取用于显示的物品堆
      */
@@ -250,7 +273,7 @@ public class GoodSpecial implements  goods{
             try {
                 ItemStack = new ItemStack(Material.getMaterial(错误物品));
             }catch (Throwable a){
-                main.getMain().getLogger().warning("config.yml文件中“错误物品”错误，请检查配置文件");
+                Main.getMain().getLogger().warning("config.yml文件中“错误物品”错误，请检查配置文件");
                 return new ItemStack(Material.BEDROCK);
             }
             错误 = true;
@@ -258,7 +281,7 @@ public class GoodSpecial implements  goods{
             物品.setAmount(1);
             ItemStack = new ItemStack(物品);
         }
-        String 价格字符舍 = money.XianShiZiFu(getPrice());
+        String 价格字符舍 = Money.XianShiZiFu(getPrice());
         ItemMeta ItemMeta = ItemStack.getItemMeta();
         if(错误){
             ItemMeta.setDisplayName("§7§l此物品配置错误");
@@ -270,14 +293,10 @@ public class GoodSpecial implements  goods{
         if(ArrayList==null){
             ArrayList = new ArrayList();
         }
-        String 服务器账户余额字符舍 = money.XianShiZiFu(main.getMain().getServermoney().getmoney());
-        Object stock = main.getMain().getFunction().function("stock",
-                new variable()
-                        .setNumberOfItems(购买数量)
-        );
+        String 服务器账户余额字符舍 = Money.XianShiZiFu(Main.getMain().getServermoney().getmoney());
         for(String S:价格显示){
             S = S.replaceAll("%价格%",价格字符舍)
-                    .replaceAll("%购买数量%",stock.toString())
+                    .replaceAll("%购买数量%",getstock())
                     .replaceAll("%服务器账户余额%",服务器账户余额字符舍);
             ArrayList.add(S);
         }
@@ -386,7 +405,7 @@ public class GoodSpecial implements  goods{
      * 调价刷新
      * */
     public void shuaxin(){
-        main.getMain().event.shuaxin();
+        Main.getMain().event.shuaxin();
     }
     /**
      * 调用此方法代表玩家购买一组物品
@@ -394,8 +413,8 @@ public class GoodSpecial implements  goods{
     public void goumaiyizu(Player P){
         goumai(P,物品.getMaxStackSize());
     }
-    String 背包满消息 = main.getMain().getConfig().getString("背包满消息");
-    String 增加手续费 = main.getMain().getConfig().getString("增加手续费");
+    String 背包满消息 = Main.getMain().getConfig().getString("背包满消息");
+    String 增加手续费 = Main.getMain().getConfig().getString("增加手续费");
     /**
      * 调用此方法代表玩家购买了此商品
      */
@@ -423,7 +442,7 @@ public class GoodSpecial implements  goods{
         if(总价格==0){
             return;
         }
-        if(!money.kouqian(P,总价格)){
+        if(!Money.kouqian(P,总价格)){
             购买数量 = 前购买数量;
             return;
         }
@@ -442,7 +461,7 @@ public class GoodSpecial implements  goods{
                 购买数量--;
                 钱 += getPrice();
             }
-            money.jiaqian(P,钱,true,false);
+            Money.jiaqian(P,钱,true,false);
             P.sendMessage(背包满消息);
         }
         shuaxin();

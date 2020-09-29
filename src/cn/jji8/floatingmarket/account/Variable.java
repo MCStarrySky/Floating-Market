@@ -1,10 +1,10 @@
-package cn.jji8.Floatingmarket.account;
+package cn.jji8.floatingmarket.account;
 /**
  * 用作处理变量
  * */
-public class variable {
+public class Variable {
     long NumberOfItems;//库存数量
-    public variable setNumberOfItems(long numberOfItems) {
+    public Variable setNumberOfItems(long numberOfItems) {
         NumberOfItems = numberOfItems;
         return this;
     }

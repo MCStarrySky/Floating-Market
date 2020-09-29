@@ -1,6 +1,6 @@
-package cn.jji8.Floatingmarket.gui;
+package cn.jji8.floatingmarket.gui;
 
-import cn.jji8.Floatingmarket.main;
+import cn.jji8.floatingmarket.Main;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -14,11 +14,11 @@ import org.bukkit.inventory.meta.ItemMeta;
  * */
 public class Case{
     public int 页数;
-    goods 物品[] = new goods[45];
+    Goods 物品[] = new Goods[45];
     Inventory 箱子;
     Case(int 页数){
         this.页数 = 页数;
-        箱子 = org.bukkit.Bukkit.createInventory(null,6*9, main.getMain().getConfig().getString("箱子标题").replaceAll("%页数%",String.valueOf(页数)));
+        箱子 = org.bukkit.Bukkit.createInventory(null,6*9, Main.getMain().getConfig().getString("箱子标题").replaceAll("%页数%",String.valueOf(页数)));
     }
     /**
      * 搜索，用于搜索一件商品
@@ -26,7 +26,7 @@ public class Case{
      * @param 商品 使用Material搜索商品
      * @return 返回对应的goods
      * */
-    public goods sousuo(Material 商品){
+    public Goods sousuo(Material 商品){
         return sousuo(new ItemStack(商品));
     }
     /**
@@ -35,8 +35,8 @@ public class Case{
      * @param 商品 使用ItemStack搜索商品
      * @return 返回对应的goods
      * */
-    public goods sousuo(ItemStack 商品){
-        for(goods goods:物品){
+    public Goods sousuo(ItemStack 商品){
+        for(Goods goods:物品){
             if(goods!=null){
                 if(商品.equals(goods.getshangping())){
                     return goods;
@@ -56,12 +56,12 @@ public class Case{
         }
         return -1;
     }
-    String 上一页按钮名字 = main.getMain().getConfig().getString("上一页按钮名字");
-    String 下一页按钮名字 = main.getMain().getConfig().getString("下一页按钮名字");
-    String 无商品名字 = main.getMain().getConfig().getString("无商品名字");
-    String 上一页物品按钮 = main.getMain().getConfig().getString("上一页物品按钮");
-    String 下一页物品按钮 = main.getMain().getConfig().getString("下一页物品按钮");
-    String 无商品显示物品 = main.getMain().getConfig().getString("无商品显示物品");
+    String 上一页按钮名字 = Main.getMain().getConfig().getString("上一页按钮名字");
+    String 下一页按钮名字 = Main.getMain().getConfig().getString("下一页按钮名字");
+    String 无商品名字 = Main.getMain().getConfig().getString("无商品名字");
+    String 上一页物品按钮 = Main.getMain().getConfig().getString("上一页物品按钮");
+    String 下一页物品按钮 = Main.getMain().getConfig().getString("下一页物品按钮");
+    String 无商品显示物品 = Main.getMain().getConfig().getString("无商品显示物品");
     /**
      * 用于加载或刷新商店页面
      * */
@@ -70,7 +70,7 @@ public class Case{
         try {
             ItemStack = new ItemStack(Material.getMaterial(无商品显示物品));
         }catch (Throwable a){
-            main.getMain().getLogger().warning("config.yml文件中“无商品显示物品”错误，请检查配置文件");
+            Main.getMain().getLogger().warning("config.yml文件中“无商品显示物品”错误，请检查配置文件");
             return;
         }
         ItemMeta ItemMeta = ItemStack.getItemMeta();
@@ -88,7 +88,7 @@ public class Case{
         try {
             ItemStack = new ItemStack(Material.getMaterial(上一页物品按钮));
         }catch (Throwable a){
-            main.getMain().getLogger().warning("config.yml文件中“上一页物品按钮”错误，请检查配置文件");
+            Main.getMain().getLogger().warning("config.yml文件中“上一页物品按钮”错误，请检查配置文件");
             return;
         }
         ItemMeta = ItemStack.getItemMeta();
@@ -99,7 +99,7 @@ public class Case{
         try {
             ItemStack = new ItemStack(Material.getMaterial(下一页物品按钮));
         }catch (Throwable a){
-            main.getMain().getLogger().warning("config.yml文件中“下一页物品按钮”错误，请检查配置文件");
+            Main.getMain().getLogger().warning("config.yml文件中“下一页物品按钮”错误，请检查配置文件");
             return;
         }
         ItemMeta = ItemStack.getItemMeta();

@@ -1,4 +1,4 @@
-package cn.jji8.Floatingmarket.command;
+package cn.jji8.floatingmarket.command;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * 一个命令补全器,转用于命令补全
  * */
-public class completion implements TabCompleter {
+public class Completion implements TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
         if(strings.length==1){

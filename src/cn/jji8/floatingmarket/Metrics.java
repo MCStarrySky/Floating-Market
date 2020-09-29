@@ -1,4 +1,4 @@
-package cn.jji8.Floatingmarket;
+package cn.jji8.floatingmarket;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

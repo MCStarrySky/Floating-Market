@@ -1,6 +1,6 @@
-package cn.jji8.Floatingmarket.money;
+package cn.jji8.floatingmarket.money;
 
-import cn.jji8.Floatingmarket.main;
+import cn.jji8.floatingmarket.Main;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -12,7 +12,7 @@ import java.io.File;
 /**
  * 主要负责操控玩家金钱
  * */
-public class money {
+public class Money {
     static Economy econ = null;
     static String 赚钱消息;
     static String 花钱消息;
@@ -21,17 +21,17 @@ public class money {
     static int 保留小数位数;
     static String 个人所得税计算函数;
     static boolean 启用服务器账户;
-    static moneyFunction function;
+    static MoneyFunction function;
     /**
      * 插件启动时被调用,用于加载经济
      * */
     public static boolean setupEconomy() {
-        main.getMain().saveResource("money.yml",false);
-        File F = new File(main.getMain().getDataFolder(),"money.yml");
+        Main.getMain().saveResource("money.yml",false);
+        File F = new File(Main.getMain().getDataFolder(),"money.yml");
         YamlConfiguration peizhi = YamlConfiguration.loadConfiguration(F);
-        main.getMain().saveResource("moneyFunction.js",false);
-        File F2 = new File(main.getMain().getDataFolder(),"moneyFunction.js");
-        function = new moneyFunction(F2);
+        Main.getMain().saveResource("moneyFunction.js",false);
+        File F2 = new File(Main.getMain().getDataFolder(),"moneyFunction.js");
+        function = new MoneyFunction(F2);
         赚钱消息 = peizhi.getString("赚钱消息");
         花钱消息 = peizhi.getString("花钱消息");
         没钱消息 = peizhi.getString("没钱消息");
@@ -39,11 +39,11 @@ public class money {
         保留小数位数 = peizhi.getInt("保留小数位数");
         个人所得税计算函数 = peizhi.getString("个人所得税计算函数");
         启用服务器账户 = peizhi.getBoolean("启用服务器账户");
-        if (main.getMain().getServer().getPluginManager().getPlugin("Vault") == null) {
+        if (Main.getMain().getServer().getPluginManager().getPlugin("Vault") == null) {
             System.out.println("没有找到Vault依赖");
             return false;
         }
-        RegisteredServiceProvider< Economy > rsp = main.getMain().getServer().getServicesManager().getRegistration(Economy.class);
+        RegisteredServiceProvider< Economy > rsp = Main.getMain().getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) {
             System.out.println("请安装ess");
             return false;
@@ -70,7 +70,7 @@ public class money {
         }
         double 剩余 = qian;
         double 个人所得税 = function.Doublefunction(个人所得税计算函数,
-                new moneyVariable()
+                new MoneyVariable()
                         .setTransactionAmount(qian)
         );
         if(个人所得税<=0){
@@ -86,7 +86,7 @@ public class money {
         }
         String 剩余字符舍 = XianShiZiFu(剩余);
         if(启用服务器账户){
-            if(!main.getMain().getServermoney().reduce(剩余)){
+            if(!Main.getMain().getServermoney().reduce(剩余)){
                 P.sendMessage(服务器没钱消息.replaceAll("%钱%",剩余字符舍));
                 return false;
             }
@@ -132,7 +132,7 @@ public class money {
                 P.sendMessage(花钱消息.replaceAll("%钱%",价格字符舍));
             }
             if(启用服务器账户){
-                main.getMain().getServermoney().increase(qian);
+                Main.getMain().getServermoney().increase(qian);
             }
             return true;
         }else {

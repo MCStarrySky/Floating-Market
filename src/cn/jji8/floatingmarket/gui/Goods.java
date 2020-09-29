@@ -1,9 +1,9 @@
-package cn.jji8.Floatingmarket.gui;
+package cn.jji8.floatingmarket.gui;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public interface goods {
+public interface Goods {
     /**
      * 获取用于显示的物品堆
      * */
@@ -64,5 +64,5 @@ public interface goods {
     /**
      * 设置物品的公式名字
      * */
-    void setSetformula(String 公式名字);
+    void setSetformula(String 价格公式,String 库存公式);
 }

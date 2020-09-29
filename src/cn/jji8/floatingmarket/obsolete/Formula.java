@@ -1,15 +1,15 @@
-package cn.jji8.Floatingmarket.obsolete;
+package cn.jji8.floatingmarket.obsolete;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
+
 /**
  * 用于计算表达试
  * 过时了，改用js了
  * */
-public class formula {
+public class Formula {
     String formula;
     static boolean tiaoshi = false;//开启调试模式可以获得计算步骤
     /**
@@ -21,7 +21,7 @@ public class formula {
     /**
      * 通过一个公式构造公式
      * */
-    formula(String formula){
+    Formula(String formula){
         this.formula = formula;
     }
     /**

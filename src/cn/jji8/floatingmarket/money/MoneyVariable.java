@@ -1,11 +1,11 @@
-package cn.jji8.Floatingmarket.money;
+package cn.jji8.floatingmarket.money;
 /**
  * 用作处理变量
  * */
-public class moneyVariable {
+public class MoneyVariable {
     double TransactionAmount;//交易金融
 
-    public moneyVariable setTransactionAmount(double transactionAmount) {
+    public MoneyVariable setTransactionAmount(double transactionAmount) {
         TransactionAmount = transactionAmount;
         return this;
     }

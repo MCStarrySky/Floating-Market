@@ -1,6 +1,6 @@
-package cn.jji8.Floatingmarket.Basics;
+package cn.jji8.floatingmarket.basics;
 
-import cn.jji8.Floatingmarket.main;
+import cn.jji8.floatingmarket.Main;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -11,13 +11,13 @@ import java.io.IOException;
  * 可以使用默认参数获取配置，配置文件中没有指定参数，会使用默认参数并且保存
  * */
 //刚写完，其他类还没有使用
-public class config {
+public class Config {
     YamlConfiguration configfile;
     File file;
     /**
      * 通过文件路径构造一个配置
      * */
-    config(File 配置路径){
+    Config(File 配置路径){
         configfile = YamlConfiguration.loadConfiguration(配置路径);
         this.file = 配置路径;
     }
@@ -60,7 +60,7 @@ public class config {
             configfile.save(file);
         } catch (IOException e) {
             e.printStackTrace();
-            main.getMain().getLogger().warning("配置文件保存失败！");
+            Main.getMain().getLogger().warning("配置文件保存失败！");
         }
     }
     /**

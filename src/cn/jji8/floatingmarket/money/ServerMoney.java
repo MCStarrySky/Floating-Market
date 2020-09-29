@@ -1,6 +1,6 @@
-package cn.jji8.Floatingmarket.money;
+package cn.jji8.floatingmarket.money;
 
-import cn.jji8.Floatingmarket.main;
+import cn.jji8.floatingmarket.Main;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -9,12 +9,12 @@ import java.io.IOException;
 /**
  * 服务器的经济账户
  * */
-public class serverMoney {
+public class ServerMoney {
     double 余额;
     File 路径;
     YamlConfiguration wenjian;
-    public serverMoney(){
-        路径 = new File(main.getMain().getDataFolder(),"ServerAccount");
+    public ServerMoney(){
+        路径 = new File(Main.getMain().getDataFolder(),"ServerAccount");
         wenjian = YamlConfiguration.loadConfiguration(路径);
         余额 = wenjian.getDouble("余额");
     }
@@ -82,7 +82,7 @@ public class serverMoney {
             wenjian.save(路径);
         } catch (IOException e) {
             e.printStackTrace();
-            main.getMain().getLogger().warning("服务器经济保存失败");
+            Main.getMain().getLogger().warning("服务器经济保存失败");
         }
     }
 
