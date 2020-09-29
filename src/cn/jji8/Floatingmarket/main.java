@@ -36,7 +36,6 @@ public class main extends JavaPlugin {
         getLogger().info("开始加载...");
         money.setupEconomy();//加载经济
         saveDefaultConfig();
-        saveResource("commodity.yml",false);
         saveResource("function.js",false);
         Bukkit.getPluginCommand("Floatingmarket").setExecutor(new implement());
         Bukkit.getPluginCommand("Floatingmarket").setTabCompleter(new completion());
