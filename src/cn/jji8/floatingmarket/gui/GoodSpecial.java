@@ -267,22 +267,31 @@ public class GoodSpecial implements Goods {
      * 获取用于显示的物品堆
      */
     public ItemStack getxianshiwupin() {
+        return 显示物品;
+    }
+    ItemStack 显示物品 = null;
+    /**
+     * 用于刷新显示物品
+     * 直接修改物品属性，所有的这个物品都会被改变
+     * */
+    public ItemStack shuaxinxianshiwupin(){
         boolean 错误 = false;
-        ItemStack ItemStack;
-        if(物品==null){
-            try {
-                ItemStack = new ItemStack(Material.getMaterial(错误物品));
-            }catch (Throwable a){
-                Main.getMain().getLogger().warning("config.yml文件中“错误物品”错误，请检查配置文件");
-                return new ItemStack(Material.BEDROCK);
+        if(显示物品==null){
+            if(物品==null){
+                try {
+                    显示物品 = new ItemStack(Material.getMaterial(错误物品));
+                }catch (Throwable a){
+                    Main.getMain().getLogger().warning("config.yml文件中“错误物品”错误，请检查配置文件");
+                    return new ItemStack(Material.BEDROCK);
+                }
+                错误 = true;
+            }else {
+                物品.setAmount(1);
+                显示物品 = new ItemStack(物品);
             }
-            错误 = true;
-        }else {
-            物品.setAmount(1);
-            ItemStack = new ItemStack(物品);
         }
         String 价格字符舍 = Money.XianShiZiFu(getPrice());
-        ItemMeta ItemMeta = ItemStack.getItemMeta();
+        ItemMeta ItemMeta = 显示物品.getItemMeta();
         if(错误){
             ItemMeta.setDisplayName("§7§l此物品配置错误");
         }
@@ -301,8 +310,8 @@ public class GoodSpecial implements Goods {
             ArrayList.add(S);
         }
         ItemMeta.setLore(ArrayList);
-        ItemStack.setItemMeta(ItemMeta);
-        return ItemStack;
+        显示物品.setItemMeta(ItemMeta);
+        return 显示物品;
     }
     /**
      * 给玩家扣除指定数量得指定物品
@@ -405,7 +414,7 @@ public class GoodSpecial implements Goods {
      * 调价刷新
      * */
     public void shuaxin(){
-        Main.getMain().event.shuaxin();
+        shuaxinxianshiwupin();
     }
     /**
      * 调用此方法代表玩家购买一组物品

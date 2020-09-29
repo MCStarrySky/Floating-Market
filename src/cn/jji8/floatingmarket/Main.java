@@ -17,6 +17,7 @@ import java.io.File;
 public class Main extends JavaPlugin {
     static Main main;
     public Event event;
+    public EventListEners EventListEners;
     Metrics Metrics;
     ServerMoney servermoney;
     Function function;
@@ -41,6 +42,7 @@ public class Main extends JavaPlugin {
         Bukkit.getPluginCommand("Floatingmarket").setTabCompleter(new Completion());
         Bukkit.getPluginManager().registerEvents(new EventListEners(),this);
         function = new Function(new File(getDataFolder(),"function.js"));
+        EventListEners = new EventListEners();
         event.jiazai();
     }
 

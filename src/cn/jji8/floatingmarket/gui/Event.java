@@ -18,9 +18,17 @@ import java.util.List;
  * 事件,主要负责事件的处理
  * */
 public class Event {
-    public FileConfiguration Configcommodity = YamlConfiguration.loadConfiguration(new File(Main.getMain().getDataFolder(),"commodity.yml"));;
+    public FileConfiguration Configcommodity;//配置文件
     ArrayList<Case> biao;
     List<String> 商品列表;
+    String 商品前缀 = "#";
+    public Event(){
+        Configcommodity = YamlConfiguration.loadConfiguration(new File(Main.getMain().getDataFolder(),"commodity.yml"));
+    }
+    public Event(String 商店名字){
+        Configcommodity = YamlConfiguration.loadConfiguration(new File(Main.getMain().getDataFolder(),"stop/商店名字.yml"));
+        商品前缀 = "stop"+商店名字;
+    }
     public boolean delete(String 商品){
         return 商品列表.remove(商品);
     }
@@ -40,11 +48,11 @@ public class Event {
         a = new ItemStack(a);
         a.setAmount(1);
         int i = 0;
-        while (商品列表.contains("#"+i)){
+        while (商品列表.contains(商品前缀+i)){
             i++;
         }
-        商品列表.add("#"+i);
-        tianjia("#"+i,a);
+        商品列表.add(商品前缀+i);
+        tianjia(商品前缀+i,a);
         shuaxin();
         baocun();
     }
