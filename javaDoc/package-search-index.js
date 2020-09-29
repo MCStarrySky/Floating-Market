@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"cn.jji8.floatingmarket"},{"l":"cn.jji8.floatingmarket.account"},{"l":"cn.jji8.floatingmarket.basics"},{"l":"cn.jji8.floatingmarket.command"},{"l":"cn.jji8.floatingmarket.gui"},{"l":"cn.jji8.floatingmarket.money"},{"l":"cn.jji8.floatingmarket.obsolete"},{"l":"所有程序包","u":"allpackages-index.html"}];updateSearchResults();
