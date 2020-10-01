@@ -19,15 +19,19 @@ import java.util.List;
  * */
 public class Event {
     public FileConfiguration Configcommodity;//配置文件
+    public File 配置路径;
     ArrayList<Case> biao;
     List<String> 商品列表;
     String 商品前缀 = "#";
+    String name = null;
     public Event(){
-        Configcommodity = YamlConfiguration.loadConfiguration(new File(Main.getMain().getDataFolder(),"commodity.yml"));
+
+        Configcommodity = YamlConfiguration.loadConfiguration(配置路径 = new File(Main.getMain().getDataFolder(),"commodity.yml"));
     }
-    public Event(String 商店名字){
-        Configcommodity = YamlConfiguration.loadConfiguration(new File(Main.getMain().getDataFolder(),"stop/商店名字.yml"));
-        商品前缀 = "stop"+商店名字;
+    public Event(String name){
+        Configcommodity = YamlConfiguration.loadConfiguration(配置路径 = new File(Main.getMain().getDataFolder(),"stop/"+name+".yml"));
+        商品前缀 = "stop"+name;
+        this.name = name;
     }
     public boolean delete(String 商品){
         return 商品列表.remove(商品);
@@ -62,7 +66,7 @@ public class Event {
      public void baocun(){
          Configcommodity.set("商品",商品列表);
          try {
-             Configcommodity.save(new File(Main.getMain().getDataFolder(),"commodity.yml"));
+             Configcommodity.save(配置路径);
          } catch (IOException e) {
              e.printStackTrace();
              Main.getMain().getLogger().warning("保存commodity.yml失败");
@@ -164,12 +168,12 @@ public class Event {
      * */
     void tianjia(String 商品,ItemStack a){
         if(biao.size()==0){
-            biao.add(new Case(页数));
+            biao.add(new Case(页数,name));
             页数++;
         }
         while (true){
             if(!biaotianjia(商品,a)){
-                biao.add(new Case(页数));
+                biao.add(new Case(页数,name));
                 页数++;
             }else {
                 return;

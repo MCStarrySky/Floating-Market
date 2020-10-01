@@ -16,9 +16,13 @@ public class Case{
     public int 页数;
     Goods 物品[] = new Goods[45];
     Inventory 箱子;
-    Case(int 页数){
+    Case(int 页数,String name){
         this.页数 = 页数;
-        箱子 = org.bukkit.Bukkit.createInventory(null,6*9, Main.getMain().getConfig().getString("箱子标题").replaceAll("%页数%",String.valueOf(页数)));
+        if(name==null){
+            箱子 = org.bukkit.Bukkit.createInventory(null,6*9, Main.getMain().getConfig().getString("箱子标题").replaceAll("%页数%",String.valueOf(页数)));
+        }else {
+            箱子 = org.bukkit.Bukkit.createInventory(null,6*9,name+String.valueOf(页数));
+        }
     }
     /**
      * 搜索，用于搜索一件商品
