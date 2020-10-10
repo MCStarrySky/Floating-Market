@@ -139,6 +139,7 @@ public class Case{
         }else if(ClickType.RIGHT.equals(a.getClick())){//鼠标右键. 出售一
             物品[格子].chushou((Player) a.getWhoClicked(),1);
         }
+        箱子.setItem(格子,物品[格子].getxianshiwupin());
     }
     /**
      * 用于给玩家打开gui

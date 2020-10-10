@@ -16,7 +16,11 @@ public class ServerMoney {
     public ServerMoney(){
         路径 = new File(Main.getMain().getDataFolder(),"ServerAccount");
         wenjian = YamlConfiguration.loadConfiguration(路径);
-        余额 = wenjian.getDouble("余额");
+        if(wenjian.contains("余额")){
+            余额 = wenjian.getDouble("余额");
+        }else {
+            余额 = 1000;
+        }
     }
     /**
      * 设置服务器余额

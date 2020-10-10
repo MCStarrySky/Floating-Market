@@ -142,6 +142,9 @@ public class Event {
     public void dakai(Player 玩家,int 页数){
         if(biao.size()<页数|页数<1){
             玩家.sendMessage(没有页数消息.replaceAll("%页数%", Integer.toString(页数)));
+            if(页数==1){
+                玩家.sendMessage("没有第一页是因为没有添加任何商品哦，快点使用add命令添加商品吧！");
+            }
             return;
         }
         页数--;

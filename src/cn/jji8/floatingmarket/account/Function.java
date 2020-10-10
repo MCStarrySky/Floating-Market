@@ -29,6 +29,11 @@ public class Function {
         }
         ScriptEngineManager manager = new ScriptEngineManager();
         ScriptEngine scriptEngine = manager.getEngineByName("js");
+        if(scriptEngine==null){
+            for(int i=0;i<10;i++){
+                System.out.println("本插件可能无法在你使用的java版本上运行，建议使用java8");
+            }
+        }
         try {
             scriptEngine.eval(FileReader);
         } catch (ScriptException e) {

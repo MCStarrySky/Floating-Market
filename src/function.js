@@ -5,36 +5,42 @@
 //  	stock———默认的计算库存变量的函数
 //      variable.getNumberOfItems()   获取物品的数量
 //————————————————————————————
+
+//----------------------------
+//预设数值区域
+//----------------------------
+var jibengjiage = 10; //基本价格 所有物品在没有被购买时的价格
+var goumaibianliang = 0.01;//每次被购买价格增加或减少的价格
+var zuidijiage = 0.01;//商品被跌价到比这个价格低后会继续持这个价格
+var kong = -99; //库存低于这个值不在出售
+var man = 99; //库存高于这个不再收购
+//-----------------------------
+//函数区域，因为是预设函数，所以只用修改预设数值区域即可，函数区域不需要修改
+//-----------------------------
 //默认的计算价格的方法
 function Price(variable){
-	var shuliang = variable.getNumberOfItems();//获取物品的数量
-	var jiage = shuliang*0.01+10;//使用shuliang*0.01+10的值
-	if(jiage<0.01){//如果价格小于0.01就执行{}里面的语句
-		jiage = 0.01;//让价格等于0.01
+	var shuliang = variable.getNumberOfItems();
+	var stock = -variable.getNumberOfItems();
+	var jiage = shuliang*goumaibianliang+jibengjiage;
+	if(jiage<zuidijiage){
+		jiage = zuidijiage;
 	}
-	if(jiage>20){//和上面一个原理，只是小于变成大于了
-		jiage = 20;
+	if(stock<kong){
+		return -1;
 	}
-	//下面是判断是否还有库存的
-	var stock = -shuliang;//库存和购买数量是反的所以加个-号就可以了。
-	if(stock<-20){//如果库存小于-20就执行{}里面的语句
-		jiage = -1//设置价格为-1，这样插件就不会出售或购买物品了
+	if(stock>man){
+		return -1;
 	}
-	if(stock>20){//和上面一样，只是小于变成了大于
-		jiage = -1
-	}
-
-	return jiage;//把计算好的价格告诉插件，如果返回一个负数，插件将不会出售或购买此物品
+	return jiage;
 }
 //默认的计算库存变量的方法
 function stock(variable){
 	var stock = -variable.getNumberOfItems();//库存和购买数量是反的所以加个-号就可以了。
-	var xianshi = stock;//让显示值等于stock（库存）
-	if(stock<=-20){//如果库存小于-20就执行{}里面的语句
-		xianshi = "缺货，不再出售"+stock//设置显示为缺货，不再出售
+	if(stock<=kong){
+		return "库存低于"+kong+"不再出售";
 	}
-	if(stock>=20){//和上面一样，只是小于变成了大于
-		xianshi = "已满，不再收购"+stock
+	if(stock>=man){
+		return "库存高于"+man+"不再收购";
 	}
-	return xianshi;//把需要显示的值告诉插件。
+	return stock;//把需要显示的值告诉插件。
 }

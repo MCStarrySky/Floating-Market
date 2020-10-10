@@ -24,11 +24,16 @@ public class MoneyFunction {
         try {
             FileReader = new FileReader(file);
         } catch (FileNotFoundException e) {
-            System.out.println("没用找到文件");
+            System.out.println("没有找到文件");
             e.printStackTrace();
         }
         ScriptEngineManager manager = new ScriptEngineManager();
         ScriptEngine scriptEngine = manager.getEngineByName("js");
+        if(scriptEngine==null){
+            for(int i=0;i<10;i++){
+                System.out.println("本插件可能无法在你使用的java版本上运行，建议使用java8");
+            }
+        }
         try {
             scriptEngine.eval(FileReader);
         } catch (ScriptException e) {

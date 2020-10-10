@@ -40,12 +40,13 @@ public class GoodSpecial implements Goods {
                 wenjian.set("库存公式",库存公式);
                 try {
                     wenjian.save(文件);
-                } catch (IOException e) {
+                } catch (Throwable e) {
                     e.printStackTrace();
-                    Main.getMain().getLogger().warning("数据文件保存失败");
+                    Main.getMain().getLogger().warning("数据文件保存失败->"+文件);
                 }
             }
         };
+        T.setName("数据保存线程->"+文件);
         T.start();
     }
 
@@ -66,7 +67,8 @@ public class GoodSpecial implements Goods {
     YamlConfiguration wenjian;
     @Override
     public void jiazai() {
-        wenjian = YamlConfiguration.loadConfiguration(文件 = new File(Main.getMain().getDataFolder(),"special/"+getname()));
+        文件 = new File(Main.getMain().getDataFolder(),"special/"+getname());
+        wenjian = YamlConfiguration.loadConfiguration(文件);
         if(wenjian.contains("购买数量")){
             购买数量 = wenjian.getLong("购买数量");
         }else {
@@ -302,7 +304,10 @@ public class GoodSpecial implements Goods {
         if(错误){
             ItemMeta.setDisplayName("§7§l此物品配置错误");
         }
-        List<String> ArrayList = new ArrayList();
+        List<String> ArrayList = 物品.getItemMeta().getLore();// new ArrayList();
+        if(ArrayList==null){
+            ArrayList = new ArrayList();
+        }
         String 服务器账户余额字符舍 = Money.XianShiZiFu(Main.getMain().getServermoney().getmoney());
         for(String S:价格显示){
             S = S.replaceAll("%价格%",价格字符舍)
@@ -416,7 +421,8 @@ public class GoodSpecial implements Goods {
      * */
     public void suanxinxianshi(){
         shuaxinxianshiwupin();
-        箱子.shuaxin();
+        //刷新在每次点击自动刷新物品了，不会每次刷新全部物品了。
+        //箱子.shuaxin();
     }
     /**
      * 调用此方法代表玩家购买一组物品
