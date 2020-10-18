@@ -166,7 +166,7 @@ public class GoodSpecial implements Goods {
             }
         }
         if(单独最低价格>0){
-            if(jiage<单独最低价格){
+            if(jiage>=0&&jiage<单独最低价格){
                 return 单独最低价格;
             }
         }
