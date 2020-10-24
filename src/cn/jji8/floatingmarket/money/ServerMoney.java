@@ -49,13 +49,16 @@ public class ServerMoney {
         baocun(10);
         return true;
     }
+
+    long 执行时间 = -1;
+    public boolean 取消自动保存 = false;
     /**
      * 保存数据，但不会频繁重复保存
      * 在指定时间多次调用此方法，前面的调用无效
      * 时间/秒；
      * */
-    long 执行时间 = -1;
     public void baocun(int 时间秒){
+        取消自动保存 = false;
         if(执行时间==-1){
             Thread T = new Thread(() -> {
                 while (true){
@@ -63,6 +66,9 @@ public class ServerMoney {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
+                    }
+                    if(取消自动保存){
+                        return;
                     }
                     if(System.currentTimeMillis()>执行时间){
                         baocun();
@@ -81,6 +87,7 @@ public class ServerMoney {
      * 保存数据
      * */
     public void baocun(){
+        取消自动保存 = true;
         wenjian.set("余额",余额);
         try {
             wenjian.save(路径);

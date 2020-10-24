@@ -45,6 +45,14 @@ public class Event {
         return 商品列表;
     }
     /**
+     * 保存商品全部数据，在服务器关闭时调用
+     * */
+    public void baocunshuju(){
+        for(Case i:biao){
+            i.baocun();
+        }
+    }
+    /**
      * 通过ItemStack添加商品
      * @param a
      * */

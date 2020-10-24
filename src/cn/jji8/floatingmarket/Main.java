@@ -44,6 +44,14 @@ public class Main extends JavaPlugin {
         function = new Function(new File(getDataFolder(),"function.js"));
         EventListEners = new EventListEners();
         event.jiazai();
+        getLogger().info("加载完成。");
+    }
+    @Override
+    public void onDisable(){
+        getLogger().info("正在保存数据..");
+        servermoney.baocun();
+        event.baocunshuju();
+        getLogger().info("保存完毕。");
     }
 
     public ServerMoney getServermoney() {
@@ -59,10 +67,12 @@ public class Main extends JavaPlugin {
      * 重新加载全部插件配置
      * */
     public void reload(){
+        servermoney.baocun();
         function = new Function(new File(getDataFolder(),"function.js"));
         Money.setupEconomy();
         servermoney = new ServerMoney();
-        main.getMain().event = new Event();
-        main.getMain().event.jiazai();
+        event.baocunshuju();
+        event = new Event();
+        event.jiazai();
     }
 }

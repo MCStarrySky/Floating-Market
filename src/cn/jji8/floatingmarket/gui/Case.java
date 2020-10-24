@@ -25,6 +25,19 @@ public class Case{
         }
     }
     /**
+     * 保存商品全部数据，服务器关闭时调用
+     * */
+    public void baocun(){
+        for(Goods i:物品){
+            if(i!=null){
+                i.baocun();
+            }
+        }
+    }
+    /**
+     *
+     * */
+    /**
      * 搜索，用于搜索一件商品
      * 没有商品返回null
      * @param 商品 使用Material搜索商品

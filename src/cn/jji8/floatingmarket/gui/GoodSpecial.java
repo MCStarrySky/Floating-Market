@@ -27,28 +27,36 @@ public class GoodSpecial implements Goods {
     /**
      * 保存方法,用于保存数据
      */
-    @Override
-    public void baocun() {
+    public void baocunyibu() {
         //完全异步保存
         Thread T = new Thread(){
             @Override
             public void run() {
-                wenjian.set("购买数量",购买数量);
-                wenjian.set("单独最高价格",单独最高价格);
-                wenjian.set("单独最低价格",单独最低价格);
-                wenjian.set("物品",物品);
-                wenjian.set("库存公式",库存公式);
-                try {
-                    wenjian.save(文件);
-                } catch (Throwable e) {
-                    e.printStackTrace();
-                    Main.getMain().getLogger().warning("数据文件保存失败->"+文件);
-                }
+                baocun();
             }
         };
         T.setName("数据保存线程->"+文件);
         T.start();
     }
+    /**
+     * 保存方法,用于保存数据
+     */
+    @Override
+    public void baocun(){
+        取消自动保存 = true;
+        wenjian.set("购买数量",购买数量);
+        wenjian.set("单独最高价格",单独最高价格);
+        wenjian.set("单独最低价格",单独最低价格);
+        wenjian.set("物品",物品);
+        wenjian.set("库存公式",库存公式);
+        try {
+            wenjian.save(文件);
+        } catch (Throwable e) {
+            e.printStackTrace();
+            Main.getMain().getLogger().warning("数据文件保存失败->"+文件);
+        }
+    }
+
 
     /**
      * 删除时调用的方法
@@ -234,12 +242,14 @@ public class GoodSpecial implements Goods {
         baocun(10);
     }
     long 执行时间 = -1;
+    public boolean 取消自动保存 = false;
     /**
      * 保存数据，但不会频繁重复保存
      * 在指定时间多次调用此方法，前面的调用无效
      * 时间/秒；
      * */
     public void baocun(int 时间秒){
+        取消自动保存 = false;
         if(执行时间==-1){
             Thread T = new Thread(){
                 @Override
@@ -249,6 +259,9 @@ public class GoodSpecial implements Goods {
                             sleep(1000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
+                        }
+                        if(取消自动保存){
+                            return;
                         }
                         if(System.currentTimeMillis()>执行时间){
                             baocun();
@@ -304,7 +317,13 @@ public class GoodSpecial implements Goods {
         if(错误){
             ItemMeta.setDisplayName("§7§l此物品配置错误");
         }
-        List<String> ArrayList = 物品.getItemMeta().getLore();// new ArrayList();
+        ItemMeta ItemMeta1 = 物品.getItemMeta();
+        List<String> ArrayList;
+        if(ItemMeta1==null){
+            ArrayList = new ArrayList();
+        }else {
+            ArrayList = ItemMeta1.getLore();// new ArrayList();
+        }
         if(ArrayList==null){
             ArrayList = new ArrayList();
         }
