@@ -278,7 +278,6 @@ public class Implement implements CommandExecutor {
             Player.sendMessage("此商品没有被上架");
             return false;
         }
-        goods.delete();
         if(Main.getMain().event.delete(goods.getname())){
             Player.sendMessage("删除成功");
             Main.getMain().event.baocun();
@@ -286,6 +285,7 @@ public class Implement implements CommandExecutor {
                 P.closeInventory();
             }
             Main.getMain().reload();
+            goods.delete();
             return true;
         }else {
             Player.sendMessage("错误？");

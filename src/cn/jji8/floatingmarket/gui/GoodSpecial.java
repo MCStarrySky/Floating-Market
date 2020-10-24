@@ -101,6 +101,9 @@ public class GoodSpecial implements Goods {
      */
     @Override
     public ItemStack getshangping() {
+        if(物品==null){
+            return 显示物品;
+        }
         物品.setAmount(1);
         return 物品;
     }
@@ -316,6 +319,10 @@ public class GoodSpecial implements Goods {
         ItemMeta ItemMeta = 显示物品.getItemMeta();
         if(错误){
             ItemMeta.setDisplayName("§7§l此物品配置错误");
+        }
+        if(物品==null){
+            Main.getMain().getLogger().warning(文件+"数据文件错误，无法加载物品！");
+            return 显示物品;
         }
         ItemMeta ItemMeta1 = 物品.getItemMeta();
         List<String> ArrayList;
