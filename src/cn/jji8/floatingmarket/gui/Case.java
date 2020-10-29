@@ -54,7 +54,7 @@ public class Case{
      * */
     public Goods sousuo(ItemStack 商品){
         for(Goods goods:物品){
-            if(goods!=null){
+            if(goods!=null&商品!=null){
                 if(商品.equals(goods.getshangping())){
                     return goods;
                 }
@@ -174,6 +174,19 @@ public class Case{
             if(this.物品[i]==null){
                 this.物品[i]=new GoodSpecial(this,文件名字,a);
                 this.物品[i].jiazai();
+                return true;
+            }
+        }
+        return false;
+    }
+    /**
+     * 添加一个goods箱子中
+     * true成功 fales满了
+     * */
+    public boolean add(Goods 商品){
+        for(int i=0;i<this.物品.length;i++){
+            if(this.物品[i]==null){
+                this.物品[i]=商品;
                 return true;
             }
         }

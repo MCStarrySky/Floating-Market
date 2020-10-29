@@ -54,9 +54,19 @@ public class Event {
     }
     /**
      * 通过ItemStack添加商品
+     * a=null 会添加“空”
      * @param a
      * */
     public void add(ItemStack a){
+        if(a==null){
+            NullGood NullGood = new NullGood();
+            NullGood.jiazai();
+            tianjia(NullGood);
+            商品列表.add("空");
+            shuaxin();
+            baocun();
+            return;
+        }
         a = new ItemStack(a);
         a.setAmount(1);
         int i = 0;
@@ -98,8 +108,10 @@ public class Event {
      * 搜索一个商品,没有返回null
      * */
     public Goods shousuo(ItemStack 商品){
-        商品 = new ItemStack(商品);
-        商品.setAmount(1);
+        if(商品!=null){
+            商品 = new ItemStack(商品);
+            商品.setAmount(1);
+        }
         for(Case a:biao){
             Goods goods = a.sousuo(商品);
             if(goods!=null){
@@ -165,7 +177,14 @@ public class Event {
         biao = new ArrayList<Case>();
         商品列表 = Configcommodity.getStringList("商品");
         for(int sss = 0;sss<商品列表.size();sss++){
-            tianjia(商品列表.get(sss),null);
+            String s = 商品列表.get(sss);
+            if("空".equals(s)) {
+                NullGood NullGood = new NullGood();
+                NullGood.jiazai();
+                tianjia(NullGood);
+                continue;
+            }
+            tianjia(s,null);
         }
         for(Case i:biao){
             i.shuaxin();
@@ -191,6 +210,7 @@ public class Event {
             }
         }
     }
+
     /**
      * 向现有case中添加商品
      * 添加成功返回true，已满返回false
@@ -199,6 +219,35 @@ public class Event {
     boolean biaotianjia(String 添加商品,ItemStack a){
         for(Case 商品:biao){
             if(商品.add(添加商品,a)){
+                return true;
+            }
+        }
+        return false;
+    }
+    /**
+     * 用于添加Goods
+     * */
+    public void tianjia(Goods 商品){
+        if(biao.size()==0){
+            biao.add(new Case(页数,name));
+            页数++;
+        }
+        while (true){
+            if(!biaotianjia(商品)){
+                biao.add(new Case(页数,name));
+                页数++;
+            }else {
+                return;
+            }
+        }
+    }
+    /**
+     * 向现有case中添加Goods
+     * 添加成功返回true，已满返回false
+     * */
+    boolean biaotianjia(Goods 添加商品){
+        for(Case 商品:biao){
+            if(商品.add(添加商品)){
                 return true;
             }
         }

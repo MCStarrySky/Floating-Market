@@ -49,6 +49,7 @@ public class GoodSpecial implements Goods {
         wenjian.set("单独最低价格",单独最低价格);
         wenjian.set("物品",物品);
         wenjian.set("库存公式",库存公式);
+        wenjian.set("价格公式",价格公式);
         try {
             wenjian.save(文件);
         } catch (Throwable e) {
@@ -93,6 +94,9 @@ public class GoodSpecial implements Goods {
         }
         if(wenjian.contains("库存公式")){
             库存公式 = wenjian.getString("库存公式");
+        }
+        if(wenjian.contains("价格公式")){
+            价格公式 = wenjian.getString("价格公式");
         }
         baocun();
     }
@@ -149,6 +153,7 @@ public class GoodSpecial implements Goods {
         if(库存公式!=null){
             this.库存公式 = 库存公式;
         }
+        baocun();
     }
     /**
      * 获取当前库存字符

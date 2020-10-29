@@ -2,6 +2,7 @@ package cn.jji8.floatingmarket.command;
 
 import cn.jji8.floatingmarket.gui.Goods;
 import cn.jji8.floatingmarket.Main;
+import cn.jji8.floatingmarket.gui.NullGood;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -210,8 +211,8 @@ public class Implement implements CommandExecutor {
     public static void addspecial(Player 命令执行者){
         ItemStack ItemStack = 命令执行者.getInventory().getItemInMainHand();
         if(Material.AIR.equals(ItemStack.getType())){
-            命令执行者.sendMessage("你不可以空手");
-            return;
+            命令执行者.sendMessage("你空手执行添加商品命令，为你添加空商品！");
+            ItemStack=null;
         }
         Goods goods = Main.getMain().event.shousuo(ItemStack);
         if(goods!=null){
@@ -270,8 +271,12 @@ public class Implement implements CommandExecutor {
     public static boolean delete(Player Player){
         ItemStack 物品堆 = Player.getInventory().getItemInMainHand();
         if(Material.AIR.equals(物品堆.getType())){
-            Player.sendMessage("你不可以空手");
-            return false;
+            Player.sendMessage("删除空商品");
+            Main.getMain().event.delete("空");
+            Main.getMain().event.baocun();
+            Main.getMain().reload();
+            Player.sendMessage("删除成功");
+            return true;
         }
         Goods goods = Main.getMain().event.shousuo(物品堆);
         if(goods==null){
