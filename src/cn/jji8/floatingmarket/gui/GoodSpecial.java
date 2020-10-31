@@ -11,7 +11,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import javax.annotation.Nonnull;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +49,8 @@ public class GoodSpecial implements Goods {
         wenjian.set("物品",物品);
         wenjian.set("库存公式",库存公式);
         wenjian.set("价格公式",价格公式);
+        wenjian.set("允许出售",允许出售);
+        wenjian.set("允许购买",允许购买);
         try {
             wenjian.save(文件);
         } catch (Throwable e) {
@@ -97,6 +98,12 @@ public class GoodSpecial implements Goods {
         }
         if(wenjian.contains("价格公式")){
             价格公式 = wenjian.getString("价格公式");
+        }
+        if(wenjian.contains("允许出售")){
+            允许出售 = wenjian.getBoolean("允许出售");
+        }
+        if(wenjian.contains("允许购买")){
+            允许购买 = wenjian.getBoolean("允许购买");
         }
         baocun();
     }
@@ -155,6 +162,22 @@ public class GoodSpecial implements Goods {
         }
         baocun();
     }
+
+    boolean 允许出售 = true;
+    boolean 允许购买 = true;
+    /**
+     * 设置物品是否允许出售或收购
+     *
+     * @param 出售
+     * @param 购买
+     */
+    @Override
+    public void set售或收购(boolean 出售, boolean 购买) {
+        允许出售 = 出售;
+        允许购买 = 购买;
+        baocun(10);
+    }
+
     /**
      * 获取当前库存字符
      * */
@@ -211,6 +234,9 @@ public class GoodSpecial implements Goods {
      * 调用此方法代表玩家出售此物品
      */
     public void chushou(Player P, int 数量) {
+        if(!允许出售){
+            return;
+        }
         if(!kouwupin(P,数量,物品)){
             P.sendMessage(没物品消息);
             return;
@@ -467,6 +493,9 @@ public class GoodSpecial implements Goods {
      * 调用此方法代表玩家购买了此商品
      */
     public void goumai(Player P, int 数量q) {
+        if(!允许购买){
+            return;
+        }
         long 前购买数量 = 购买数量;
         double 钱数 = 0;
         int 数量 = 数量q;

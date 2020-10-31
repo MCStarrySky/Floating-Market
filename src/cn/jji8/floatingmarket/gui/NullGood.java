@@ -159,4 +159,15 @@ public class NullGood implements Goods {
     public void setSetformula(String 价格公式, String 库存公式) {
 
     }
+
+    /**
+     * 设置物品是否允许出售或购买
+     *
+     * @param 出售
+     * @param 购买
+     */
+    @Override
+    public void set售或收购(boolean 出售, boolean 购买) {
+
+    }
 }

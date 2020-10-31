@@ -64,5 +64,9 @@ public interface Goods {
     /**
      * 设置物品的公式名字
      * */
-    void setSetformula(String 价格公式,String 库存公式);
+    public void setSetformula(String 价格公式,String 库存公式);
+    /**
+     * 设置物品是否允许出售或购买
+     * */
+    public void set售或收购(boolean 出售,boolean 购买);
 }

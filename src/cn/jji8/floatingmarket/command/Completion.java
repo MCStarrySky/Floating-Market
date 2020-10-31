@@ -23,6 +23,14 @@ public class Completion implements TabCompleter {
             ArrayList.add("exchange");
             ArrayList.add("setservermoney");
             ArrayList.add("setformula");
+            ArrayList.add("setBuyOrSell");
+            return ArrayList;
+        }
+        if("setBuyOrSell".equalsIgnoreCase(strings[0])){
+            ArrayList<String> ArrayList = new ArrayList<String>();
+            ArrayList.add("true");
+            ArrayList.add("false");
+            System.out.println("补全了的呜呜呜");
             return ArrayList;
         }
         return null;
