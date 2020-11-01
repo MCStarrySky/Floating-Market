@@ -2,20 +2,34 @@ package cn.jji8.floatingmarket.gui;
 
 import cn.jji8.floatingmarket.Main;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.io.File;
+
 public class NullGood implements Goods {
+    /**
+     * 通过数据路径，和名字构造一个NullGood
+     * */
+    public NullGood(File file,String name){
+        this.name = name;
+        文件 = new File(file,name);
+        wenjian = YamlConfiguration.loadConfiguration(文件);
+    }
+    String name;
+    File 文件;
+    YamlConfiguration wenjian;
     /**
      * 获取用于显示的物品堆
      */
     @Override
     public ItemStack getxianshiwupin() {
-        if (显示物品==null){
+        if (物品==null){
             Main.getMain().getLogger().warning("config.yml文件中“空物品”错误，请检查配置文件");
         }
-        return 显示物品;
+        return 物品;
     }
 
     /**
@@ -26,7 +40,6 @@ public class NullGood implements Goods {
      */
     @Override
     public void goumai(Player P, int 数量) {
-
     }
 
     /**
@@ -37,7 +50,6 @@ public class NullGood implements Goods {
      */
     @Override
     public void chushou(Player P, int 数量) {
-
     }
 
     /**
@@ -45,7 +57,13 @@ public class NullGood implements Goods {
      */
     @Override
     public void baocun() {
-
+        wenjian.set("物品",物品);
+        try {
+            wenjian.save(文件);
+        } catch (Throwable e) {
+            e.printStackTrace();
+            Main.getMain().getLogger().warning("数据文件保存失败->"+文件);
+        }
     }
 
     /**
@@ -53,11 +71,11 @@ public class NullGood implements Goods {
      */
     @Override
     public void delete() {
-
+        文件.delete();
     }
     String 空物品 = Main.getMain().getConfig().getString("空物品");
     String 空物品名字 = Main.getMain().getConfig().getString("空物品名字");
-    ItemStack 显示物品 =null;
+    ItemStack 物品;
     /**
      * 加载方法,用于加载数据
      * false没有相关数据使用默认值 true加载成功
@@ -65,14 +83,17 @@ public class NullGood implements Goods {
     @Override
     public void jiazai() {
         try {
-            显示物品 = new ItemStack(Material.getMaterial(空物品));
+            物品 = new ItemStack(Material.getMaterial(空物品));
         }catch (Throwable a){
             Main.getMain().getLogger().warning("config.yml文件中“空物品”错误，请检查配置文件");
             return;
         }
-        ItemMeta ItemMeta = 显示物品.getItemMeta();
+        ItemMeta ItemMeta = 物品.getItemMeta();
         ItemMeta.setDisplayName(空物品名字);
-        显示物品.setItemMeta(ItemMeta);
+        物品.setItemMeta(ItemMeta);
+        if(wenjian.contains("物品")){
+            物品 = wenjian.getItemStack("物品");
+        }
     }
 
     /**
@@ -126,7 +147,7 @@ public class NullGood implements Goods {
      */
     @Override
     public String getname() {
-        return "空";
+        return name;
     }
 
     /**
@@ -136,7 +157,6 @@ public class NullGood implements Goods {
      */
     @Override
     public void chushouyizu(Player P) {
-
     }
 
     /**
@@ -146,7 +166,27 @@ public class NullGood implements Goods {
      */
     @Override
     public void goumaiyizu(Player P) {
-
+        if(!P.hasPermission("Floatingmarket.setornament")){
+            P.sendMessage("没有打开商店的权限，需要：Floatingmarket.setornament");
+            return;
+        }
+        ItemStack ItemStack = P.getInventory().getItem(0);//获取玩家背包的第一个物品
+        if(ItemStack==null){
+            try {
+                物品 = new ItemStack(Material.getMaterial(空物品));
+                ItemMeta ItemMeta = 物品.getItemMeta();
+                ItemMeta.setDisplayName(空物品名字);
+                物品.setItemMeta(ItemMeta);
+            }catch (Throwable a){
+                Main.getMain().getLogger().warning("config.yml文件中“空物品”错误，请检查配置文件");
+                return;
+            }
+        }else {
+            物品 = new ItemStack(ItemStack);
+        }
+        baocun();
+        P.sendMessage("设置成功！");
+        return;
     }
 
     /**

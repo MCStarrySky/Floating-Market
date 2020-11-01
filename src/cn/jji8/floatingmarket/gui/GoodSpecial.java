@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import javax.annotation.Nonnull;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +20,15 @@ import java.util.Map;
  * 负责特殊物品处理
  * */
 public class GoodSpecial implements Goods {
-    Case 箱子 = null;
+    /**
+     * 通过数据路径，和名字构造一个GoodSpecial
+     * */
+    public GoodSpecial(File file,String name){
+        文件名字 = name;
+        文件 = new File(file,getname());
+        wenjian = YamlConfiguration.loadConfiguration(文件);
+    }
+
 
     /**
      * 保存方法,用于保存数据
@@ -77,8 +84,6 @@ public class GoodSpecial implements Goods {
     YamlConfiguration wenjian;
     @Override
     public void jiazai() {
-        文件 = new File(Main.getMain().getDataFolder(),"special/"+getname());
-        wenjian = YamlConfiguration.loadConfiguration(文件);
         if(wenjian.contains("购买数量")){
             购买数量 = wenjian.getLong("购买数量");
         }else {
@@ -105,7 +110,6 @@ public class GoodSpecial implements Goods {
         if(wenjian.contains("允许购买")){
             允许购买 = wenjian.getBoolean("允许购买");
         }
-        baocun();
     }
     /**
      * 用于获取原商品
@@ -130,7 +134,7 @@ public class GoodSpecial implements Goods {
      *构造器，需要一个Case，在刷新物品的时候会调用Case的shuaxin方法
      * 需要可以继承Case重写shuaxin即可。
      * */
-    public GoodSpecial(@Nonnull Case Case,String 文件名字,ItemStack a){
+    /*public GoodSpecial(@Nonnull Case Case,String 文件名字,ItemStack a){
         箱子 = Case;
         this.文件名字 = 文件名字;
         jiazai();
@@ -139,7 +143,7 @@ public class GoodSpecial implements Goods {
         }
         物品=a;
         baocun();
-    }
+    }*/
     long 购买数量 = 0;
     double 涨跌幅度 = Main.getMain().getConfig().getDouble("涨跌价格");
     double 涨跌指数 = Main.getMain().getConfig().getDouble("涨跌指数");

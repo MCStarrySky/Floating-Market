@@ -22,7 +22,7 @@ public class Implement implements CommandExecutor {
         if(参数.length==1){
             if("reload".equalsIgnoreCase(参数[0])){
                 if(!commandSender.hasPermission("Floatingmarket.reload")){
-                    commandSender.sendMessage("你没有执行此命令的权限");
+                    commandSender.sendMessage("你没有执行此命令的权限,需要：Floatingmarket.reload");
                     return true;
                 }
                 commandSender.sendMessage("开始重新加载");
@@ -48,7 +48,7 @@ public class Implement implements CommandExecutor {
         if(参数.length>=1){
             if("help".equalsIgnoreCase(参数[0])){
                 if(!commandSender.hasPermission("Floatingmarket.help")){
-                    commandSender.sendMessage("你没有执行此命令的权限");
+                    commandSender.sendMessage("你没有执行此命令的权限,需要：Floatingmarket.help");
                     return true;
                 }
                 commandSender.sendMessage("§6-------------------------帮助-----------------------");
@@ -77,7 +77,7 @@ public class Implement implements CommandExecutor {
             }
             if("setBuyOrSell".equalsIgnoreCase(参数[0])){
                 if(!commandSender.hasPermission("Floatingmarket.setBuyOrSell")){
-                    commandSender.sendMessage("你没有执行此命令的权限");
+                    commandSender.sendMessage("你没有执行此命令的权限,需要：Floatingmarket.setBuyOrSell");
                     return true;
                 }
                 if(参数.length!=3){
@@ -96,7 +96,7 @@ public class Implement implements CommandExecutor {
             }
             if("setformula".equalsIgnoreCase(参数[0])){
                 if(!commandSender.hasPermission("Floatingmarket.setformula")){
-                    commandSender.sendMessage("你没有执行此命令的权限");
+                    commandSender.sendMessage("你没有执行此命令的权限,需要：Floatingmarket.setformula");
                     return true;
                 }
                 if(参数.length==2){
@@ -113,7 +113,7 @@ public class Implement implements CommandExecutor {
             }
             if("add".equalsIgnoreCase(参数[0])){
                 if(!commandSender.hasPermission("Floatingmarket.add")){
-                    commandSender.sendMessage("你没有执行此命令的权限");
+                    commandSender.sendMessage("你没有执行此命令的权限,需要：Floatingmarket.add");
                     return true;
                 }
                 addspecial(Player);
@@ -121,7 +121,7 @@ public class Implement implements CommandExecutor {
             }
             if("setservermoney".equalsIgnoreCase(参数[0])){
                 if(!commandSender.hasPermission("Floatingmarket.setservermoney")){
-                    commandSender.sendMessage("你没有执行此命令的权限");
+                    commandSender.sendMessage("你没有执行此命令的权限,需要：Floatingmarket.setservermoney");
                     return true;
                 }
                 if(参数.length!=2){
@@ -138,7 +138,7 @@ public class Implement implements CommandExecutor {
             }
             if("set".equalsIgnoreCase(参数[0])){
                 if(!commandSender.hasPermission("Floatingmarket.set")){
-                    commandSender.sendMessage("你没有执行此命令的权限");
+                    commandSender.sendMessage("你没有执行此命令的权限,需要：Floatingmarket.set");
                     return true;
                 }
                 if(参数.length!=4&参数.length!=2){
@@ -166,7 +166,7 @@ public class Implement implements CommandExecutor {
             }
             if("delete".equalsIgnoreCase(参数[0])){
                 if(!commandSender.hasPermission("Floatingmarket.delete")){
-                    commandSender.sendMessage("你没有执行此命令的权限");
+                    commandSender.sendMessage("你没有执行此命令的权限,需要：Floatingmarket.delete");
                     return true;
                 }
                 delete(Player);
@@ -174,7 +174,7 @@ public class Implement implements CommandExecutor {
             }
             if("exchange".equalsIgnoreCase(参数[0])){
                 if(!commandSender.hasPermission("Floatingmarket.exchange")){
-                    commandSender.sendMessage("你没有执行此命令的权限");
+                    commandSender.sendMessage("你没有执行此命令的权限,需要：Floatingmarket.exchange");
                     return true;
                 }
                 if(参数.length!=3){
@@ -234,6 +234,13 @@ public class Implement implements CommandExecutor {
         if(Material.AIR.equals(ItemStack.getType())){
             命令执行者.sendMessage("你空手执行添加商品命令，为你添加空商品！");
             ItemStack=null;
+            Main.getMain().event.add(ItemStack);
+            Goods goods = Main.getMain().event.shousuo(ItemStack);
+            if(goods!=null){
+                goods.baocun();
+            }
+            命令执行者.sendMessage("添加成功");
+            return;
         }
         Goods goods = Main.getMain().event.shousuo(ItemStack);
         if(goods!=null){
@@ -310,11 +317,7 @@ public class Implement implements CommandExecutor {
         ItemStack 物品堆 = Player.getInventory().getItemInMainHand();
         if(Material.AIR.equals(物品堆.getType())){
             Player.sendMessage("删除空商品");
-            Main.getMain().event.delete("空");
-            Main.getMain().event.baocun();
-            Main.getMain().reload();
-            Player.sendMessage("删除成功");
-            return true;
+            物品堆=null;
         }
         Goods goods = Main.getMain().event.shousuo(物品堆);
         if(goods==null){

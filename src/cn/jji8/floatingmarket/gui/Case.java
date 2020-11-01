@@ -58,6 +58,10 @@ public class Case{
                 if(商品.equals(goods.getshangping())){
                     return goods;
                 }
+            }else if(goods!=null&商品==null){
+                if(goods.getshangping()==null){
+                    return goods;
+                }
             }
         }
         return null;
@@ -166,14 +170,12 @@ public class Case{
      * true成功 fales满了
      * ItemStack可以null
      * @param a
-     * @param 文件名字
      * @return
      * */
-    public boolean add(String 文件名字,ItemStack a){
+    public boolean add(GoodSpecial a){
         for(int i=0;i<this.物品.length;i++){
             if(this.物品[i]==null){
-                this.物品[i]=new GoodSpecial(this,文件名字,a);
-                this.物品[i].jiazai();
+                this.物品[i]=a;
                 return true;
             }
         }
