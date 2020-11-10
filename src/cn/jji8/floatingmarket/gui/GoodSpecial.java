@@ -2,6 +2,7 @@ package cn.jji8.floatingmarket.gui;
 
 import cn.jji8.floatingmarket.account.Variable;
 import cn.jji8.floatingmarket.Main;
+import cn.jji8.floatingmarket.gui.data.Shop;
 import cn.jji8.floatingmarket.logger.Logger;
 import cn.jji8.floatingmarket.money.Money;
 import org.bukkit.Material;
@@ -21,6 +22,7 @@ import java.util.Map;
  * 负责特殊物品处理
  * */
 public class GoodSpecial implements Goods {
+    Shop shop;
     /**
      * 通过数据路径，和名字构造一个GoodSpecial
      * */
@@ -28,6 +30,7 @@ public class GoodSpecial implements Goods {
         文件名字 = name;
         文件 = new File(file,getname());
         wenjian = YamlConfiguration.loadConfiguration(文件);
+        shop = new Shop(new File(file,getname()+"###"));
     }
 
 
@@ -65,6 +68,7 @@ public class GoodSpecial implements Goods {
             e.printStackTrace();
             Main.getMain().getLogger().warning("数据文件保存失败->"+文件);
         }
+        shop.save();
     }
 
 

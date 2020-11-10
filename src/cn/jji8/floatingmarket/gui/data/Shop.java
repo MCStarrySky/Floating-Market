@@ -1,11 +1,14 @@
 package cn.jji8.floatingmarket.gui.data;
 
+import cn.jji8.floatingmarket.logger.Language;
 import cn.jji8.floatingmarket.logger.Logger;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -23,16 +26,25 @@ public class Shop {
         yml = YamlConfiguration.loadConfiguration(datafile);
     }
     /**
+     * 删除这个限制
+     * */
+    public void delete(){
+        dataFile.delete();
+        yml = YamlConfiguration.loadConfiguration(dataFile);
+    }
+    /**
      * 判断一个玩家是否可以继续出售此商店的物品
      * 如果可以出售将自动设置玩家已出售的钱数
      * */
     public boolean ifPlayerContinue(Player player,double money){
         Logger.putdebug(player+"判断玩家是否可以出售物品  交易金格："+money);
-        if(ifPlayerSell(player,money)&ifAllSell(money,player)){
-            setAllMoney(getAllMoney()+money);
-            setMoney(player,getMoney(player)+money);
-            Logger.putdebug(player+"可以出售物品");
-            return true;
+        if(ifAllSell(money,player)){
+            if(ifPlayerSell(player,money)){
+                setAllMoney(getAllMoney()+money);
+                setMoney(player,getMoney(player)+money);
+                Logger.putdebug(player+"可以出售物品");
+                return true;
+            }
         }
         Logger.putdebug(player+"玩家不可以出售物品");
         player.sendMessage("已拒绝交易");
@@ -53,12 +65,18 @@ public class Shop {
                 setTime(player, System.currentTimeMillis());
             }
             double PlayerMoney = getMoney(player) + money;
+            Map<String,Object> map = new HashMap<>();
+            map.put("%累计赚钱%",getMoney(player));
+            map.put("%交易金融%",money);
+            map.put("%最大限制金融%",playerMaxMoney);
+            map.put("%剩余刷新时间%",(getTime(player)+playerMaxTime-System.currentTimeMillis())/1000);
+            map.put("%还可以赚钱%",(playerMaxMoney-getMoney(player)));
             if (PlayerMoney > playerMaxMoney) {
                 Logger.putdebug(player+"超过限制");
-                player.sendMessage("你在本商店"+(getTime(player)+playerMaxTime-System.currentTimeMillis())/1000+"秒前，赚到的钱"+getMoney(player)+"+本次交易"+money+"超出了最大限制"+playerMaxMoney+"你还需要等"+(getTime(player)+playerMaxTime-System.currentTimeMillis())/1000+"秒才可继续出售");
+                Logger.putPlayerChat(player, Language.get("玩家购买一个物品超过限制","你在本物品%剩余刷新时间%秒前，赚到的钱%累计赚钱%+本次交易%交易金融%超出了最大限制%最大限制金融%你还需要等%剩余刷新时间%秒才可继续出售"));
                 return false;
             }
-            player.sendMessage("你在本商店"+(getTime(player)+playerMaxTime-System.currentTimeMillis())/1000+"秒前，最多还可以赚"+(playerMaxMoney-getMoney(player))+"元");
+            Logger.putPlayerChat(player,Language.get("玩家购买一个有限制的物品","你在本物品%剩余刷新时间%秒前，最多还可以赚%还可以赚钱%元"));
         }
         Logger.putdebug(player+"没有超过限制");
         return true;
@@ -78,12 +96,18 @@ public class Shop {
                 setAllTime(System.currentTimeMillis());
             }
             double allmoney = getAllMoney()+money;
+            Map<String,Object> map = new HashMap<>();
+            map.put("%全部玩家累计赚钱%",getAllMoney());
+            map.put("%交易金融%",money);
+            map.put("%全部玩家最大限制金融%",allMaxMoney);
+            map.put("%全部玩家剩余刷新时间%",(getAllTime()+allTime-System.currentTimeMillis())/1000);
+            map.put("%全部玩家还可以赚钱%",(allMaxMoney-getAllMoney()));
             if(allmoney > allMaxMoney){
                 Logger.putdebug("全局超过限制");
-                player.sendMessage("全部玩家在本商店"+(getAllTime()+allTime-System.currentTimeMillis())/1000+"秒前，赚到的钱"+getAllMoney()+"+本次交易"+money+"超出了最大限制"+allMaxMoney+"你还需要等"+(getAllTime()+allTime-System.currentTimeMillis())/1000+"秒才可继续出售");
+                Logger.putPlayerChat(player, Language.get("玩家购买一个限制全部玩家的物品超过限制","全部玩家在本物品%全部玩家剩余刷新时间%秒前，赚到的钱%全部玩家累计赚钱%+本次交易%交易金融%超出了最大限制%全部玩家最大限制金融%你还需要等%全部玩家剩余刷新时间%秒才可继续出售"));
                 return false;
             }
-            player.sendMessage("全部玩家在本商店"+(getAllTime()+allTime-System.currentTimeMillis())/1000+"秒前，最多还可以赚"+(allMaxMoney-getAllMoney())+"元");
+            Logger.putPlayerChat(player, Language.get("玩家购买一个限制全部玩家的物品","全部玩家在本物品%全部玩家剩余刷新时间%秒前，最多还可以赚%全部玩家还可以赚钱%元"));
         }
         Logger.putdebug("全局没有超过限制");
         return true;
@@ -110,7 +134,7 @@ public class Shop {
      * */
     public void setAllTime(long money){
         yml.set("all.time",money);
-        saveAsynchronous();
+        //saveAsynchronous();
     }
 
     /**
@@ -118,21 +142,21 @@ public class Shop {
      * */
     public void setAllMoney(double money){
         yml.set("all.money",money);
-        saveAsynchronous();
+        //saveAsynchronous();
     }
     /**
      * 设置玩家已经出售的钱数
      * */
     public void setMoney(Player player,double money){
         yml.set("Data."+player.getName()+".money",money);
-        saveAsynchronous();
+        //saveAsynchronous();
     }
     /**
      * 设置玩家上次出售物品的时间
      * */
     public void setTime(Player player,long time){
         yml.set("Data."+player.getName()+".time",time);
-        saveAsynchronous();
+        //saveAsynchronous();
     }
 
 
@@ -164,11 +188,13 @@ public class Shop {
      * 保存数据
      * */
     public void save(){
-        try {
-            yml.save(dataFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-            Logger.putWarning(dataFile+"    ------>文件保存失败，请检查磁盘空间，和文件权限。");
+        if(yml.contains(allTimeKey)|yml.contains(allMaxMoneyKey)|yml.contains(PlayerTimeKey)|yml.contains(PlayerMaxMoneyKey)){
+            try {
+                yml.save(dataFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+                Logger.putWarning(dataFile+"    ------>文件保存失败，请检查磁盘空间，和文件权限。");
+            }
         }
     }
     /**
