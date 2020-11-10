@@ -1,6 +1,7 @@
 package cn.jji8.floatingmarket.money;
 
 import cn.jji8.floatingmarket.Main;
+import cn.jji8.floatingmarket.logger.Logger;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -93,7 +94,7 @@ public class ServerMoney {
             wenjian.save(路径);
         } catch (IOException e) {
             e.printStackTrace();
-            Main.getMain().getLogger().warning("服务器经济保存失败");
+            Logger.putWarning("服务器经济保存失败");
         }
     }
 

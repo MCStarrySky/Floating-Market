@@ -1,6 +1,7 @@
 package cn.jji8.floatingmarket.basics;
 
 import cn.jji8.floatingmarket.Main;
+import cn.jji8.floatingmarket.logger.Logger;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -60,7 +61,7 @@ public class Config {
             configfile.save(file);
         } catch (IOException e) {
             e.printStackTrace();
-            Main.getMain().getLogger().warning("配置文件保存失败！");
+            Logger.putWarning("配置文件保存失败！");
         }
     }
     /**

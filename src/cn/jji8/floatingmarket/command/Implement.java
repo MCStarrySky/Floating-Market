@@ -3,6 +3,7 @@ package cn.jji8.floatingmarket.command;
 import cn.jji8.floatingmarket.gui.Goods;
 import cn.jji8.floatingmarket.Main;
 import cn.jji8.floatingmarket.gui.NullGood;
+import cn.jji8.floatingmarket.logger.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -25,21 +26,21 @@ public class Implement implements CommandExecutor {
                     commandSender.sendMessage("你没有执行此命令的权限,需要：Floatingmarket.reload");
                     return true;
                 }
-                commandSender.sendMessage("开始重新加载");
+                Logger.putPlayerChat(commandSender,"开始重新加载");
                 reload();
-                commandSender.sendMessage("重新加载完成");
+                Logger.putPlayerChat(commandSender,"重新加载完成");
                 return true;
             }
         }
         //下方命令必须玩家操作
         if(!(commandSender instanceof Player)){
-            commandSender.sendMessage("操作失败");
+            Logger.putPlayerChat(commandSender,"操作失败");
             return true;
         }
         Player Player = (Player) commandSender;
         if(参数.length==0){
             if(!commandSender.hasPermission("Floatingmarket.open")){
-                commandSender.sendMessage("没有打开商店的权限，需要：Floatingmarket.open");
+                Logger.putPlayerChat(commandSender,"没有打开商店的权限，需要：Floatingmarket.open");
                 return true;
             }
             Main.getMain().event.dakai(Player,1);
@@ -48,40 +49,40 @@ public class Implement implements CommandExecutor {
         if(参数.length>=1){
             if("help".equalsIgnoreCase(参数[0])){
                 if(!commandSender.hasPermission("Floatingmarket.help")){
-                    commandSender.sendMessage("你没有执行此命令的权限,需要：Floatingmarket.help");
+                    Logger.putPlayerChat(commandSender,"你没有执行此命令的权限,需要：Floatingmarket.help");
                     return true;
                 }
-                commandSender.sendMessage("§6-------------------------帮助-----------------------");
-                commandSender.sendMessage("§e/Floatingmarket help");
-                commandSender.sendMessage("§7//获取帮助");
-                commandSender.sendMessage("§e/Floatingmarket add");
-                commandSender.sendMessage("§7//添加物品，将手上物品添加到商店中");
-                commandSender.sendMessage("§e/Floatingmarket set 库存数量");
-                commandSender.sendMessage("§e/Floatingmarket set 库存数量 最低价格 最高价格 ");
-                commandSender.sendMessage("§7//设置手上物品的库存数量");
-                commandSender.sendMessage("§e/Floatingmarket delete");
-                commandSender.sendMessage("§7//删除手上物品商品");
-                commandSender.sendMessage("§e/Floatingmarket reload");
-                commandSender.sendMessage("§7//重新加载插件配置文件");
-                commandSender.sendMessage("§e/Floatingmarket exchange 数字 数字");
-                commandSender.sendMessage("§7//交换两个商品的位置");
-                commandSender.sendMessage("§e/Floatingmarket setservermoney 钱");
-                commandSender.sendMessage("§7//设置服务器钱数");
-                commandSender.sendMessage("§e/Floatingmarket setBuyOrSell 出售{true,false} 购买{true,false}");
-                commandSender.sendMessage("§7//设置物品是否允许出售或收购");
-                commandSender.sendMessage("§e/Floatingmarket setformula 价格公式");
-                commandSender.sendMessage("§e/Floatingmarket setformula 价格公式 库存显示公式");
-                commandSender.sendMessage("§7//设置物品使用的公式");
-                commandSender.sendMessage("§6---------------------------------------------------");
+                Logger.putPlayerChat(commandSender,"§6-------------------------帮助-----------------------");
+                Logger.putPlayerChat(commandSender,"§e/Floatingmarket help");
+                Logger.putPlayerChat(commandSender,"§7//获取帮助");
+                Logger.putPlayerChat(commandSender,"§e/Floatingmarket add");
+                Logger.putPlayerChat(commandSender,"§7//添加物品，将手上物品添加到商店中");
+                Logger.putPlayerChat(commandSender,"§e/Floatingmarket set 库存数量");
+                Logger.putPlayerChat(commandSender,"§e/Floatingmarket set 库存数量 最低价格 最高价格 ");
+                Logger.putPlayerChat(commandSender,"§7//设置手上物品的库存数量");
+                Logger.putPlayerChat(commandSender,"§e/Floatingmarket delete");
+                Logger.putPlayerChat(commandSender,"§7//删除手上物品商品");
+                Logger.putPlayerChat(commandSender,"§e/Floatingmarket reload");
+                Logger.putPlayerChat(commandSender,"§7//重新加载插件配置文件");
+                Logger.putPlayerChat(commandSender,"§e/Floatingmarket exchange 数字 数字");
+                Logger.putPlayerChat(commandSender,"§7//交换两个商品的位置");
+                Logger.putPlayerChat(commandSender,"§e/Floatingmarket setservermoney 钱");
+                Logger.putPlayerChat(commandSender,"§7//设置服务器钱数");
+                Logger.putPlayerChat(commandSender,"§e/Floatingmarket setBuyOrSell 出售{true,false} 购买{true,false}");
+                Logger.putPlayerChat(commandSender,"§7//设置物品是否允许出售或收购");
+                Logger.putPlayerChat(commandSender,"§e/Floatingmarket setformula 价格公式");
+                Logger.putPlayerChat(commandSender,"§e/Floatingmarket setformula 价格公式 库存显示公式");
+                Logger.putPlayerChat(commandSender,"§7//设置物品使用的公式");
+                Logger.putPlayerChat(commandSender,"§6---------------------------------------------------");
                 return true;
             }
             if("setBuyOrSell".equalsIgnoreCase(参数[0])){
                 if(!commandSender.hasPermission("Floatingmarket.setBuyOrSell")){
-                    commandSender.sendMessage("你没有执行此命令的权限,需要：Floatingmarket.setBuyOrSell");
+                    Logger.putPlayerChat(commandSender,"你没有执行此命令的权限,需要：Floatingmarket.setBuyOrSell");
                     return true;
                 }
                 if(参数.length!=3){
-                    commandSender.sendMessage("§e/Floatingmarket setBuyOrSell 出售{true,false} 购买{true,false}");
+                    Logger.putPlayerChat(commandSender,"§e/Floatingmarket setBuyOrSell 出售{true,false} 购买{true,false}");
                     return true;
                 }
                 if(("true".equalsIgnoreCase(参数[1])|"false".equalsIgnoreCase(参数[1]))
@@ -89,14 +90,14 @@ public class Implement implements CommandExecutor {
                 ){
                     setBuyOrSell(Player,"true".equalsIgnoreCase(参数[1]),"true".equalsIgnoreCase(参数[2]));
                 }else {
-                    commandSender.sendMessage("§e/Floatingmarket setBuyOrSell 出售{true,false} 购买{true,false}");
-                    commandSender.sendMessage("§e{true(允许),false(不允许)}");
+                    Logger.putPlayerChat(commandSender,"§e/Floatingmarket setBuyOrSell 出售{true,false} 购买{true,false}");
+                    Logger.putPlayerChat(commandSender,"§e{true(允许),false(不允许)}");
                 }
                 return true;
             }
             if("setformula".equalsIgnoreCase(参数[0])){
                 if(!commandSender.hasPermission("Floatingmarket.setformula")){
-                    commandSender.sendMessage("你没有执行此命令的权限,需要：Floatingmarket.setformula");
+                    Logger.putPlayerChat(commandSender,"你没有执行此命令的权限,需要：Floatingmarket.setformula");
                     return true;
                 }
                 if(参数.length==2){
@@ -107,13 +108,13 @@ public class Implement implements CommandExecutor {
                     setSetformula(Player,参数[1],参数[2]);
                     return true;
                 }
-                commandSender.sendMessage("setformula 价格公式");
-                commandSender.sendMessage("setformula 价格公式 库存显示公式");
+                Logger.putPlayerChat(commandSender,"setformula 价格公式");
+                Logger.putPlayerChat(commandSender,"setformula 价格公式 库存显示公式");
                 return true;
             }
             if("add".equalsIgnoreCase(参数[0])){
                 if(!commandSender.hasPermission("Floatingmarket.add")){
-                    commandSender.sendMessage("你没有执行此命令的权限,需要：Floatingmarket.add");
+                    Logger.putPlayerChat(commandSender,"你没有执行此命令的权限,需要：Floatingmarket.add");
                     return true;
                 }
                 addspecial(Player);
@@ -121,36 +122,36 @@ public class Implement implements CommandExecutor {
             }
             if("setservermoney".equalsIgnoreCase(参数[0])){
                 if(!commandSender.hasPermission("Floatingmarket.setservermoney")){
-                    commandSender.sendMessage("你没有执行此命令的权限,需要：Floatingmarket.setservermoney");
+                    Logger.putPlayerChat(commandSender,"你没有执行此命令的权限,需要：Floatingmarket.setservermoney");
                     return true;
                 }
                 if(参数.length!=2){
-                    commandSender.sendMessage("setservermoney 钱数");
+                    Logger.putPlayerChat(commandSender,"setservermoney 钱数");
                     return true;
                 }
                 try {
                     setServermoney(Double.valueOf(参数[1]));
-                    commandSender.sendMessage("设置成功");
+                    Logger.putPlayerChat(commandSender,"设置成功");
                 }catch (NumberFormatException a){
-                    commandSender.sendMessage("你输入的数字不是一个有效数字");
+                    Logger.putPlayerChat(commandSender,"你输入的数字不是一个有效数字");
                 }
                 return true;
             }
             if("set".equalsIgnoreCase(参数[0])){
                 if(!commandSender.hasPermission("Floatingmarket.set")){
-                    commandSender.sendMessage("你没有执行此命令的权限,需要：Floatingmarket.set");
+                    Logger.putPlayerChat(commandSender,"你没有执行此命令的权限,需要：Floatingmarket.set");
                     return true;
                 }
                 if(参数.length!=4&参数.length!=2){
-                    commandSender.sendMessage("set 库存数量");
-                    commandSender.sendMessage("set 库存数量 最低价格 最高价格");
+                    Logger.putPlayerChat(commandSender,"set 库存数量");
+                    Logger.putPlayerChat(commandSender,"set 库存数量 最低价格 最高价格");
                     return true;
                 }
                 if(参数.length==4){
                     try {
                         tianjia(Player,Integer.valueOf(参数[1]),Double.valueOf(参数[2]),Double.valueOf(参数[3]));
                     }catch (NumberFormatException a){
-                        commandSender.sendMessage("你输入的数字不是一个有效数字");
+                        Logger.putPlayerChat(commandSender,"你输入的数字不是一个有效数字");
                     }
                     return true;
                 }
@@ -158,7 +159,7 @@ public class Implement implements CommandExecutor {
                     try {
                         tianjia(Player,Integer.valueOf(参数[1]));
                     }catch (NumberFormatException a){
-                        commandSender.sendMessage("你输入的数字不是一个有效数字");
+                        Logger.putPlayerChat(commandSender,"你输入的数字不是一个有效数字");
                     }
                     return true;
                 }
@@ -166,7 +167,7 @@ public class Implement implements CommandExecutor {
             }
             if("delete".equalsIgnoreCase(参数[0])){
                 if(!commandSender.hasPermission("Floatingmarket.delete")){
-                    commandSender.sendMessage("你没有执行此命令的权限,需要：Floatingmarket.delete");
+                    Logger.putPlayerChat(commandSender,"你没有执行此命令的权限,需要：Floatingmarket.delete");
                     return true;
                 }
                 delete(Player);
@@ -174,28 +175,28 @@ public class Implement implements CommandExecutor {
             }
             if("exchange".equalsIgnoreCase(参数[0])){
                 if(!commandSender.hasPermission("Floatingmarket.exchange")){
-                    commandSender.sendMessage("你没有执行此命令的权限,需要：Floatingmarket.exchange");
+                    Logger.putPlayerChat(commandSender,"你没有执行此命令的权限,需要：Floatingmarket.exchange");
                     return true;
                 }
                 if(参数.length!=3){
-                    commandSender.sendMessage("§e/Floatingmarket exchange 数字 数字");
+                    Logger.putPlayerChat(commandSender,"§e/Floatingmarket exchange 数字 数字");
                     return true;
                 }
                 try {
                     if(exchange(Integer.valueOf(参数[1]),Integer.valueOf(参数[2]))){
-                        commandSender.sendMessage("交换成功");
+                        Logger.putPlayerChat(commandSender,"交换成功");
                         return true;
                     }else {
-                        commandSender.sendMessage("你输入的数字没有对应的商品");
+                        Logger.putPlayerChat(commandSender,"你输入的数字没有对应的商品");
                     }
                 }catch (NumberFormatException a){
-                    commandSender.sendMessage("你输入的数字不是一个有效数字");
+                    Logger.putPlayerChat(commandSender,"你输入的数字不是一个有效数字");
                     return true;
                 }
                 return true;
             }
         }
-        commandSender.sendMessage("命令参数错误");
+        Logger.putPlayerChat(commandSender,"命令参数错误");
         return true;
     }
     /**
@@ -232,14 +233,14 @@ public class Implement implements CommandExecutor {
     public static void addspecial(Player 命令执行者){
         ItemStack ItemStack = 命令执行者.getInventory().getItemInMainHand();
         if(Material.AIR.equals(ItemStack.getType())){
-            命令执行者.sendMessage("你空手执行添加商品命令，为你添加空商品！");
+            Logger.putPlayerChat(命令执行者,"你空手执行添加商品命令，为你添加空商品！");
             ItemStack=null;
             Main.getMain().event.add(ItemStack);
             Goods goods = Main.getMain().event.shousuo(ItemStack);
             if(goods!=null){
                 goods.baocun();
             }
-            命令执行者.sendMessage("添加成功");
+            Logger.putPlayerChat(命令执行者,"添加成功");
             return;
         }
         Goods goods = Main.getMain().event.shousuo(ItemStack);
@@ -255,7 +256,7 @@ public class Implement implements CommandExecutor {
             if(goods.getjiage()<=0.0001){
                 价格字符舍 = "0.0001";
             }
-            命令执行者.sendMessage("本商品已经在买了，现在价格是："+价格字符舍);
+            Logger.putPlayerChat(命令执行者,"本商品已经在买了，现在价格是："+价格字符舍);
             return;
         }
         Main.getMain().event.add(ItemStack);
@@ -263,7 +264,7 @@ public class Implement implements CommandExecutor {
         if(goods!=null){
             goods.baocun();
         }
-        命令执行者.sendMessage("添加成功");
+        Logger.putPlayerChat(命令执行者,"添加成功");
     }
     /**
      * 修改方法，修改物品的价格
@@ -271,12 +272,12 @@ public class Implement implements CommandExecutor {
     public static void tianjia(Player Player, int 价格, double 最低价格, double 最高价格){
         ItemStack 物品堆 = Player.getInventory().getItemInMainHand();
         if(Material.AIR.equals(物品堆.getType())){
-            Player.sendMessage("你不可以空手");
+            Logger.putPlayerChat(Player,"你不可以空手");
             return;
         }
         Goods goods = Main.getMain().event.shousuo(物品堆);
         if(goods==null){
-            Player.sendMessage("此商品没有被上架");
+            Logger.putPlayerChat(Player,"此商品没有被上架");
             return;
         }
         goods.setjiage(价格);
@@ -284,7 +285,7 @@ public class Implement implements CommandExecutor {
         goods.setgaojiage(最高价格);
         Main.getMain().event.shuaxin();
         goods.baocun();
-        Player.sendMessage("设置成功");
+        Logger.putPlayerChat(Player,"设置成功");
     }
     /**
      * 设置玩家手上物品是否允许出售或购买
@@ -292,16 +293,16 @@ public class Implement implements CommandExecutor {
     public static void setBuyOrSell(Player Player,boolean 出售, boolean 购买){
         ItemStack 物品堆 = Player.getInventory().getItemInMainHand();
         if(Material.AIR.equals(物品堆.getType())){
-            Player.sendMessage("你不可以空手");
+            Logger.putPlayerChat(Player,"你不可以空手");
             return;
         }
         Goods goods = Main.getMain().event.shousuo(物品堆);
         if(goods==null){
-            Player.sendMessage("此商品没有被上架");
+            Logger.putPlayerChat(Player,"此商品没有被上架");
             return;
         }
         goods.set售或收购(出售,购买);
-        Player.sendMessage("设置成功");
+        Logger.putPlayerChat(Player,"设置成功");
     }
     /**
      * 修改方法，修改物品的价格
@@ -316,16 +317,16 @@ public class Implement implements CommandExecutor {
     public static boolean delete(Player Player){
         ItemStack 物品堆 = Player.getInventory().getItemInMainHand();
         if(Material.AIR.equals(物品堆.getType())){
-            Player.sendMessage("删除空商品");
+            Logger.putPlayerChat(Player,"删除空商品");
             物品堆=null;
         }
         Goods goods = Main.getMain().event.shousuo(物品堆);
         if(goods==null){
-            Player.sendMessage("此商品没有被上架");
+            Logger.putPlayerChat(Player,"此商品没有被上架");
             return false;
         }
         if(Main.getMain().event.delete(goods.getname())){
-            Player.sendMessage("删除成功");
+            Logger.putPlayerChat(Player,"删除成功");
             Main.getMain().event.baocun();
             for(Player P: Bukkit.getOnlinePlayers()){
                 P.closeInventory();
@@ -334,7 +335,7 @@ public class Implement implements CommandExecutor {
             goods.delete();
             return true;
         }else {
-            Player.sendMessage("错误？");
+            Logger.putPlayerChat(Player,"错误？");
             return false;
         }
 
@@ -348,15 +349,15 @@ public class Implement implements CommandExecutor {
     public void setSetformula(Player Player,String 价格公式,String 库存公式) {
         ItemStack 物品堆 = Player.getInventory().getItemInMainHand();
         if(Material.AIR.equals(物品堆.getType())){
-            Player.sendMessage("你不可以空手");
+            Logger.putPlayerChat(Player,"你不可以空手");
             return;
         }
         Goods goods = Main.getMain().event.shousuo(物品堆);
         if(goods==null){
-            Player.sendMessage("此商品没有被上架");
+            Logger.putPlayerChat(Player,"此商品没有被上架");
             return;
         }
         goods.setSetformula(价格公式,库存公式);
-        Player.sendMessage("设置成功");
+        Logger.putPlayerChat(Player,"设置成功");
     }
 }

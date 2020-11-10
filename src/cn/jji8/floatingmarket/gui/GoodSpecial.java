@@ -2,6 +2,7 @@ package cn.jji8.floatingmarket.gui;
 
 import cn.jji8.floatingmarket.account.Variable;
 import cn.jji8.floatingmarket.Main;
+import cn.jji8.floatingmarket.logger.Logger;
 import cn.jji8.floatingmarket.money.Money;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -341,7 +342,7 @@ public class GoodSpecial implements Goods {
                 try {
                     显示物品 = new ItemStack(Material.getMaterial(错误物品));
                 }catch (Throwable a){
-                    Main.getMain().getLogger().warning("config.yml文件中“错误物品”错误，请检查配置文件");
+                    Logger.putSevere("config.yml文件中“错误物品”错误，请检查配置文件");
                     return new ItemStack(Material.BEDROCK);
                 }
                 错误 = true;
@@ -356,7 +357,7 @@ public class GoodSpecial implements Goods {
             ItemMeta.setDisplayName("§7§l此物品配置错误");
         }
         if(物品==null){
-            Main.getMain().getLogger().warning(文件+"数据文件错误，无法加载物品！");
+            Logger.putSevere(文件+"数据文件错误，无法加载物品！");
             return 显示物品;
         }
         ItemMeta ItemMeta1 = 物品.getItemMeta();
@@ -385,7 +386,7 @@ public class GoodSpecial implements Goods {
      * */
     boolean kouwupin(Player P,int 数量,Material 物品){
         if(物品==null){
-            P.sendMessage("执行此命令出错");
+            Logger.putPlayerChat(P,"执行此命令出错");
         }
         return kouwupin(P,数量,new ItemStack(物品));
     }
@@ -515,7 +516,7 @@ public class GoodSpecial implements Goods {
         }
         double 总价格 = 0;
         if(手续费>0){
-            P.sendMessage(增加手续费.replaceAll("%钱%",Double.toString(手续费)));
+            Logger.putPlayerChat(P,增加手续费.replaceAll("%钱%",Double.toString(手续费)));
             总价格 = 钱数+手续费;
         }else {
             总价格 = 钱数;

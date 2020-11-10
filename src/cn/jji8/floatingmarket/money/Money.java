@@ -1,6 +1,7 @@
 package cn.jji8.floatingmarket.money;
 
 import cn.jji8.floatingmarket.Main;
+import cn.jji8.floatingmarket.logger.Logger;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -61,11 +62,13 @@ public class Money {
     }
     public static boolean jiaqian(Player P, double qian,boolean 显示消息,boolean 是否扣税){
         if(econ==null){
-            P.sendMessage("没有经济前置，无法处理");
+            Logger.putPlayerChat(P, "无法处理此事件");
+            Logger.putSevere("没有经济前置，无法出来经济事件");
             return false;
         }
         if(qian<0){
-            P.sendMessage("出现负数，无法操作");
+            Logger.putPlayerChat(P,"出现负数，无法操作");
+            Logger.putWarning(P.getName()+"在加钱操作中出现了负数，无法处理！");
             return false;
         }
         double 剩余 = qian;
@@ -98,7 +101,7 @@ public class Money {
             }
             return true;
         }else {
-            P.sendMessage("操作失败");
+            Logger.putPlayerChat(P,"操作失败");
             return false;
         }
     }
@@ -112,31 +115,33 @@ public class Money {
     }
     public static boolean kouqian(Player P, double qian,boolean 显示消息){
         if(econ==null){
-            P.sendMessage("没有经济前置，无法处理");
+            Logger.putPlayerChat(P,"没有经济前置，无法处理");
+            Logger.putSevere("没有经济前置，无法处理经济操作");
             return false;
         }
         if(qian<0){
-            P.sendMessage("出现负数，无法操作");
+            Logger.putPlayerChat(P,"出现负数，无法操作");
+            Logger.putWarning(P.getName()+"玩家在扣钱炒作中出现负数，物品处理");
             return false;
         }
         String 价格字符舍 = XianShiZiFu(qian);
         if(!econ.has(P,qian)){//检查玩家是否有足够的钱
             if(显示消息){
-                P.sendMessage(没钱消息.replaceAll("%钱%",价格字符舍));
+                Logger.putPlayerChat(P,没钱消息.replaceAll("%钱%",价格字符舍));
             }
             return false;
         }
         EconomyResponse EconomyResponse = econ.withdrawPlayer(P,qian);//尝试扣钱
         if(EconomyResponse.transactionSuccess()){//判断操作是否成功
             if(显示消息){
-                P.sendMessage(花钱消息.replaceAll("%钱%",价格字符舍));
+                Logger.putPlayerChat(P,花钱消息.replaceAll("%钱%",价格字符舍));
             }
             if(启用服务器账户){
                 Main.getMain().getServermoney().increase(qian);
             }
             return true;
         }else {
-            P.sendMessage("操作失败");
+            Logger.putPlayerChat(P,"操作失败");
             return false;
         }
     }

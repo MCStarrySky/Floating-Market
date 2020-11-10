@@ -1,5 +1,7 @@
 package cn.jji8.floatingmarket.money;
 
+import cn.jji8.floatingmarket.logger.Logger;
+
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -24,20 +26,20 @@ public class MoneyFunction {
         try {
             FileReader = new FileReader(file);
         } catch (FileNotFoundException e) {
-            System.out.println("没有找到文件");
+            Logger.putSevere("没有找到文件:"+file);
             e.printStackTrace();
         }
         ScriptEngineManager manager = new ScriptEngineManager();
         ScriptEngine scriptEngine = manager.getEngineByName("js");
         if(scriptEngine==null){
             for(int i=0;i<10;i++){
-                System.out.println("本插件可能无法在你使用的java版本上运行，建议使用java8");
+                Logger.putSevere("本插件可能无法在你使用的java版本上运行，建议使用java8");
             }
         }
         try {
             scriptEngine.eval(FileReader);
         } catch (ScriptException e) {
-            System.out.println(file+":你的脚本初始化出错");
+            Logger.putSevere(file+":你的脚本初始化出错");
             e.printStackTrace();
         }
         try {
@@ -55,10 +57,10 @@ public class MoneyFunction {
         try {
             sss = Invocable.invokeFunction(name,value);
         } catch (ScriptException e) {
-            System.out.println(file+":你的脚本运行出错");
+            Logger.putWarning(file+":你的脚本运行出错");
             e.printStackTrace();
         } catch (NoSuchMethodException e) {
-            System.out.println(file+":你的脚本中没有"+name+"方法");
+            Logger.putWarning(file+":你的脚本中没有"+name+"方法");
             e.printStackTrace();
         }
         return sss;
@@ -75,7 +77,7 @@ public class MoneyFunction {
         try {
             qqq = Double.parseDouble(sss.toString());
         }catch (NumberFormatException eee){
-            System.out.println(file+":你的脚本返回的”"+sss.toString()+"“不是一个数");
+            Logger.putWarning(file+":你的脚本返回的”"+sss.toString()+"“不是一个数");
             eee.printStackTrace();
         }
         return qqq;

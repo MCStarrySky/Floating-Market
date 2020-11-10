@@ -1,6 +1,7 @@
 package cn.jji8.floatingmarket.gui;
 
 import cn.jji8.floatingmarket.Main;
+import cn.jji8.floatingmarket.logger.Logger;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -27,7 +28,7 @@ public class NullGood implements Goods {
     @Override
     public ItemStack getxianshiwupin() {
         if (物品==null){
-            Main.getMain().getLogger().warning("config.yml文件中“空物品”错误，请检查配置文件");
+            Logger.putSevere("config.yml文件中“空物品”错误，请检查配置文件");
         }
         return 物品;
     }
@@ -62,7 +63,7 @@ public class NullGood implements Goods {
             wenjian.save(文件);
         } catch (Throwable e) {
             e.printStackTrace();
-            Main.getMain().getLogger().warning("数据文件保存失败->"+文件);
+            Logger.putWarning("数据文件保存失败->"+文件);
         }
     }
 
@@ -85,7 +86,7 @@ public class NullGood implements Goods {
         try {
             物品 = new ItemStack(Material.getMaterial(空物品));
         }catch (Throwable a){
-            Main.getMain().getLogger().warning("config.yml文件中“空物品”错误，请检查配置文件");
+            Logger.putSevere("config.yml文件中“空物品”错误，请检查配置文件");
             return;
         }
         ItemMeta ItemMeta = 物品.getItemMeta();
@@ -167,7 +168,7 @@ public class NullGood implements Goods {
     @Override
     public void goumaiyizu(Player P) {
         if(!P.hasPermission("Floatingmarket.setornament")){
-            P.sendMessage("没有打开商店的权限，需要：Floatingmarket.setornament");
+            Logger.putPlayerChat(P,"没有打开商店的权限，需要：Floatingmarket.setornament");
             return;
         }
         ItemStack ItemStack = P.getInventory().getItem(0);//获取玩家背包的第一个物品
@@ -178,14 +179,14 @@ public class NullGood implements Goods {
                 ItemMeta.setDisplayName(空物品名字);
                 物品.setItemMeta(ItemMeta);
             }catch (Throwable a){
-                Main.getMain().getLogger().warning("config.yml文件中“空物品”错误，请检查配置文件");
+                Logger.putSevere("config.yml文件中“空物品”错误，请检查配置文件");
                 return;
             }
         }else {
             物品 = new ItemStack(ItemStack);
         }
         baocun();
-        P.sendMessage("设置成功！");
+        Logger.putPlayerChat(P,"设置成功！");
         return;
     }
 

@@ -1,6 +1,7 @@
 package cn.jji8.floatingmarket.gui;
 
 import cn.jji8.floatingmarket.Main;
+import cn.jji8.floatingmarket.logger.Logger;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -95,7 +96,7 @@ public class Event {
              Configcommodity.save(配置路径);
          } catch (IOException e) {
              e.printStackTrace();
-             Main.getMain().getLogger().warning("保存commodity.yml失败");
+             Logger.putWarning("保存commodity.yml失败");
          }
      }
      /**
@@ -171,7 +172,7 @@ public class Event {
         if(biao.size()<页数|页数<1){
             玩家.sendMessage(没有页数消息.replaceAll("%页数%", Integer.toString(页数)));
             if(页数==1){
-                玩家.sendMessage("没有第一页是因为没有添加任何商品哦，快点使用add命令添加商品吧！");
+                Logger.putPlayerChat(玩家,"没有第一页是因为没有添加任何商品哦，快点使用add命令添加商品吧！");
             }
             return;
         }

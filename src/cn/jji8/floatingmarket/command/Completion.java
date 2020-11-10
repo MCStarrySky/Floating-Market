@@ -1,5 +1,6 @@
 package cn.jji8.floatingmarket.command;
 
+import cn.jji8.floatingmarket.logger.Logger;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -30,7 +31,7 @@ public class Completion implements TabCompleter {
             ArrayList<String> ArrayList = new ArrayList<String>();
             ArrayList.add("true");
             ArrayList.add("false");
-            System.out.println("补全了的呜呜呜");
+            Logger.putdebug("补全了的呜呜呜");
             return ArrayList;
         }
         return null;

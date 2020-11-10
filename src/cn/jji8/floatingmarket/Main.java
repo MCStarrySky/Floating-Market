@@ -1,6 +1,8 @@
 package cn.jji8.floatingmarket;
 
 import cn.jji8.floatingmarket.account.Function;
+import cn.jji8.floatingmarket.logger.Language;
+import cn.jji8.floatingmarket.logger.Logger;
 import cn.jji8.floatingmarket.money.Money;
 import cn.jji8.floatingmarket.money.ServerMoney;
 import cn.jji8.floatingmarket.command.Completion;
@@ -34,7 +36,9 @@ public class Main extends JavaPlugin {
         main = this;
         event = new Event();
         servermoney = new ServerMoney();
-        getLogger().info("开始加载...");
+        Logger.load(this);
+        Language.load(this);
+        Logger.putInfo("开始加载...");
         Money.setupEconomy();//加载经济
         saveDefaultConfig();
         saveResource("function.js",false);
@@ -44,14 +48,14 @@ public class Main extends JavaPlugin {
         function = new Function(new File(getDataFolder(),"function.js"));
         EventListEners = new EventListEners();
         event.jiazai();
-        getLogger().info("加载完成。");
+        Logger.putInfo("加载完成。");
     }
     @Override
     public void onDisable(){
-        getLogger().info("正在保存数据..");
+        Logger.putInfo("正在保存数据..");
         servermoney.baocun();
         event.baocunshuju();
-        getLogger().info("保存完毕。");
+        Logger.putInfo("保存完毕。");
     }
 
     public ServerMoney getServermoney() {
