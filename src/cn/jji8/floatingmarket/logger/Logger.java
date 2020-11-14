@@ -33,7 +33,7 @@ public class Logger {
         fadeIn = getConfig("标题消息淡入时间", 20);
         stay = getConfig("标题消息持续时间",40);
         fadeOut = getConfig("标题消息淡出时间",20);
-        puginPrefix = getConfig("聊天消息前缀","["+main.getName()+"]");
+        puginPrefix = getConfig("聊天消息前缀","["+main.getName()+"]:");
         pluginName = main.getName();
         System.out.println(main.getName()+"信息管理器加载完成..");
     }

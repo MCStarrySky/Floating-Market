@@ -1,5 +1,6 @@
 package cn.jji8.floatingmarket.logger;
 
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 

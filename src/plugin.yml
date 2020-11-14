@@ -6,7 +6,7 @@ api-version: 1.13
 softdepend: [Vault]
 commands:
   Floatingmarket:
-    aliases: [fg]
+    aliases: [fg,浮动市场]
     description: "Floatingmarket的主命令"
     permission-message: "你没有权限执行此命令"
     usage: /<command> 命令

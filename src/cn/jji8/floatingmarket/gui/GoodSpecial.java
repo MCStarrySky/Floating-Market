@@ -2,7 +2,7 @@ package cn.jji8.floatingmarket.gui;
 
 import cn.jji8.floatingmarket.account.Variable;
 import cn.jji8.floatingmarket.Main;
-import cn.jji8.floatingmarket.gui.data.Shop;
+import cn.jji8.floatingmarket.gui.data.ShopSell;
 import cn.jji8.floatingmarket.logger.Logger;
 import cn.jji8.floatingmarket.money.Money;
 import org.bukkit.Material;
@@ -22,7 +22,10 @@ import java.util.Map;
  * 负责特殊物品处理
  * */
 public class GoodSpecial implements Goods {
-    Shop shop;
+    ShopSell shop;
+    public ShopSell getShop() {
+        return shop;
+    }
     /**
      * 通过数据路径，和名字构造一个GoodSpecial
      * */
@@ -30,7 +33,7 @@ public class GoodSpecial implements Goods {
         文件名字 = name;
         文件 = new File(file,getname());
         wenjian = YamlConfiguration.loadConfiguration(文件);
-        shop = new Shop(new File(file,getname()+"###"));
+        shop = new ShopSell(new File(file,getname()+"###"));
     }
 
 
@@ -247,15 +250,15 @@ public class GoodSpecial implements Goods {
             return;
         }
         if(!kouwupin(P,数量,物品)){
-            P.sendMessage(没物品消息);
+            Logger.putPlayerChat(P,没物品消息);
             return;
         }
         if(手续费>0){
             if(!Money.kouqian(P,手续费,false)){
-                P.sendMessage(手续费不足.replaceAll("%钱%",Double.toString(手续费)));
+                Logger.putPlayerChat(P,手续费不足.replaceAll("%钱%",Double.toString(手续费)));
                 return;
             }else {
-                P.sendMessage(扣除手续费.replaceAll("%钱%",Double.toString(手续费)));
+                Logger.putPlayerChat(P,扣除手续费.replaceAll("%钱%",Double.toString(手续费)));
             }
         }
         double 钱 = 0;
@@ -274,15 +277,17 @@ public class GoodSpecial implements Goods {
         if(钱==0){
             return;
         }
-        if(!Money.jiaqian(P,钱)){
-            for(int i = 0;i<数量a;i++){
-                购买数量++;
-                P.getInventory().addItem(物品);
+        if(shop.ifPlayerContinue(P,钱)){
+            if(Money.jiaqian(P,钱)){
+                suanxinxianshi();
+                baocun(10);
+                return;
             }
-            return;
         }
-        suanxinxianshi();
-        baocun(10);
+        for(int i = 0;i<数量a;i++){
+            购买数量++;
+            P.getInventory().addItem(物品);
+        }
     }
     long 执行时间 = -1;
     public boolean 取消自动保存 = false;
@@ -548,7 +553,7 @@ public class GoodSpecial implements Goods {
                 钱 += getPrice();
             }
             Money.jiaqian(P,钱,true,false);
-            P.sendMessage(背包满消息);
+            Logger.putPlayerChat(P,背包满消息);
         }
         suanxinxianshi();
         baocun(10);

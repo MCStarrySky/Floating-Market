@@ -90,14 +90,14 @@ public class Money {
         String 剩余字符舍 = XianShiZiFu(剩余);
         if(启用服务器账户){
             if(!Main.getMain().getServermoney().reduce(剩余)){
-                P.sendMessage(服务器没钱消息.replaceAll("%钱%",剩余字符舍));
+                Logger.putPlayerChat(P,服务器没钱消息.replaceAll("%钱%",剩余字符舍));
                 return false;
             }
         }
         EconomyResponse EconomyResponse = econ.depositPlayer(P,剩余);//尝试加钱
         if(EconomyResponse.transactionSuccess()){//判断操作是否成功
             if(显示消息){
-                P.sendMessage(赚钱消息.replaceAll("%钱%",价格字符舍).replaceAll("%税%",扣税字符舍).replaceAll("%剩余%",剩余字符舍));
+                Logger.putPlayerChat(P,赚钱消息.replaceAll("%钱%",价格字符舍).replaceAll("%税%",扣税字符舍).replaceAll("%剩余%",剩余字符舍));
             }
             return true;
         }else {

@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  *
  * */
-public class Shop {
+public class ShopSell {
     File dataFile;
     YamlConfiguration yml;
     public final static String PlayerTimeKey="everytime",PlayerMaxMoneyKey="Maxmoney",allTimeKey="alleverytime",allMaxMoneyKey="allMaxMoney";
@@ -21,7 +21,7 @@ public class Shop {
      * 构造一个Shop
      * 给定一个yml数据文件
      * */
-    public Shop(File datafile){
+    public ShopSell(File datafile){
         dataFile = datafile;
         yml = YamlConfiguration.loadConfiguration(datafile);
     }
@@ -47,7 +47,7 @@ public class Shop {
             }
         }
         Logger.putdebug(player+"玩家不可以出售物品");
-        player.sendMessage("已拒绝交易");
+        Logger.putPlayerChat(player,Language.get("玩家交易达到最高上限","已拒绝交易"));
         return false;
     }
     /**
@@ -73,10 +73,10 @@ public class Shop {
             map.put("%还可以赚钱%",(playerMaxMoney-getMoney(player)));
             if (PlayerMoney > playerMaxMoney) {
                 Logger.putdebug(player+"超过限制");
-                Logger.putPlayerChat(player, Language.get("玩家购买一个物品超过限制","你在本物品%剩余刷新时间%秒前，赚到的钱%累计赚钱%+本次交易%交易金融%超出了最大限制%最大限制金融%你还需要等%剩余刷新时间%秒才可继续出售"));
+                Logger.putPlayerChat(player, Language.get("玩家购买一个物品超过限制","你在本物品%剩余刷新时间%秒前，赚到的钱%累计赚钱%+本次交易%交易金融%超出了最大限制%最大限制金融%你还需要等%剩余刷新时间%秒才可继续出售",map));
                 return false;
             }
-            Logger.putPlayerChat(player,Language.get("玩家购买一个有限制的物品","你在本物品%剩余刷新时间%秒前，最多还可以赚%还可以赚钱%元"));
+            Logger.putPlayerChat(player,Language.get("玩家购买一个有限制的物品","你在本物品%剩余刷新时间%秒前，最多还可以赚%还可以赚钱%元",map));
         }
         Logger.putdebug(player+"没有超过限制");
         return true;
@@ -104,10 +104,10 @@ public class Shop {
             map.put("%全部玩家还可以赚钱%",(allMaxMoney-getAllMoney()));
             if(allmoney > allMaxMoney){
                 Logger.putdebug("全局超过限制");
-                Logger.putPlayerChat(player, Language.get("玩家购买一个限制全部玩家的物品超过限制","全部玩家在本物品%全部玩家剩余刷新时间%秒前，赚到的钱%全部玩家累计赚钱%+本次交易%交易金融%超出了最大限制%全部玩家最大限制金融%你还需要等%全部玩家剩余刷新时间%秒才可继续出售"));
+                Logger.putPlayerChat(player, Language.get("玩家购买一个限制全部玩家的物品超过限制","全部玩家在本物品%全部玩家剩余刷新时间%秒前，赚到的钱%全部玩家累计赚钱%+本次交易%交易金融%超出了最大限制%全部玩家最大限制金融%你还需要等%全部玩家剩余刷新时间%秒才可继续出售",map));
                 return false;
             }
-            Logger.putPlayerChat(player, Language.get("玩家购买一个限制全部玩家的物品","全部玩家在本物品%全部玩家剩余刷新时间%秒前，最多还可以赚%全部玩家还可以赚钱%元"));
+            Logger.putPlayerChat(player, Language.get("玩家购买一个限制全部玩家的物品","全部玩家在本物品%全部玩家剩余刷新时间%秒前，最多还可以赚%全部玩家还可以赚钱%元",map));
         }
         Logger.putdebug("全局没有超过限制");
         return true;

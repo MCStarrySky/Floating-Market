@@ -11,7 +11,8 @@ import cn.jji8.floatingmarket.gui.Event;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
+import java.io.*;
+import java.util.logging.Level;
 
 /**
  * 一个主类
@@ -42,6 +43,7 @@ public class Main extends JavaPlugin {
         Money.setupEconomy();//加载经济
         saveDefaultConfig();
         saveResource("function.js",false);
+        saveResource("language.yml",false);
         Bukkit.getPluginCommand("Floatingmarket").setExecutor(new Implement());
         Bukkit.getPluginCommand("Floatingmarket").setTabCompleter(new Completion());
         Bukkit.getPluginManager().registerEvents(new EventListEners(),this);
@@ -74,9 +76,51 @@ public class Main extends JavaPlugin {
         servermoney.baocun();
         function = new Function(new File(getDataFolder(),"function.js"));
         Money.setupEconomy();
+        Language.load(this);
         servermoney = new ServerMoney();
         event.baocunshuju();
         event = new Event();
         event.jiazai();
+    }
+    /**
+     * 用于释放配置文件的方法
+     * */
+    public void saveResource(String resourcePath, boolean replace) {
+        if (resourcePath != null && !resourcePath.equals("")) {
+            resourcePath = resourcePath.replace('\\', '/');
+            InputStream in = this.getResource(resourcePath);
+            if (in == null) {
+                throw new IllegalArgumentException("The embedded resource '" + resourcePath + "' cannot be found in " + super.getFile());
+            } else {
+                File outFile = new File(super.getDataFolder(), resourcePath);
+                int lastIndex = resourcePath.lastIndexOf(47);
+                File outDir = new File(super.getDataFolder(), resourcePath.substring(0, lastIndex >= 0 ? lastIndex : 0));
+                if (!outDir.exists()) {
+                    outDir.mkdirs();
+                }
+
+                try {
+                    if (outFile.exists() && !replace) {
+                        //super.getLogger().log(Level.WARNING, "Could not save " + outFile.getName() + " to " + outFile + " because " + outFile.getName() + " already exists.");
+                    } else {
+                        OutputStream out = new FileOutputStream(outFile);
+                        byte[] buf = new byte[1024];
+
+                        int len;
+                        while((len = in.read(buf)) > 0) {
+                            out.write(buf, 0, len);
+                        }
+
+                        out.close();
+                        in.close();
+                    }
+                } catch (IOException var10) {
+                    super.getLogger().log(Level.SEVERE, "Could not save " + outFile.getName() + " to " + outFile, var10);
+                }
+
+            }
+        } else {
+            throw new IllegalArgumentException("ResourcePath cannot be null or empty");
+        }
     }
 }
