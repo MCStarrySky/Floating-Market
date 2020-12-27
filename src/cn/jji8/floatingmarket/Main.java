@@ -76,6 +76,7 @@ public class Main extends JavaPlugin {
         servermoney.baocun();
         function = new Function(new File(getDataFolder(),"function.js"));
         Money.setupEconomy();
+        Logger.load(this);
         Language.load(this);
         servermoney = new ServerMoney();
         event.baocunshuju();
