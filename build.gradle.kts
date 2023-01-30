@@ -9,19 +9,19 @@ taboolib {
     install("common")
     install("common-5")
     install("module-configuration")
-    install("platform-velocity")
+    install("platform-bukkit")
     install("expansion-command-helper")
     classifier = null
     version = "6.0.10-73"
 }
 
 repositories {
-    maven { url = uri("https://nexus.velocitypowered.com/repository/maven-public/") }
     mavenCentral()
 }
 
 dependencies {
-    compileOnly("com.velocitypowered:velocity-api:1.1.8")
+    compileOnly("ink.ptms.core:v11902:11902-minimize:mapped")
+    compileOnly("ink.ptms.core:v11902:11902-minimize:universal")
     compileOnly(kotlin("stdlib"))
     compileOnly(fileTree("libs"))
 }
